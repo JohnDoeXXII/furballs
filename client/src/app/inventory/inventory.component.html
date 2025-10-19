@@ -1,0 +1,14 @@
+<div class="container">
+  <h2>Inventory</h2>
+
+  <div >
+        @if (animals$ | async; as animalList) {
+            <span>Yes, the server is running</span>
+            <p *ngIf="animalList.length === 0">No animals in inventory.</p>
+            <ul *ngIf="animalList.length > 0">
+              <li *ngFor="let a of animalList">{{ a.shelterId }} — {{ a.name }} ({{ a.type }})</li>
+            </ul>
+        } @else {
+            <span>No, the server is not running</span>
+        } 
+</div>

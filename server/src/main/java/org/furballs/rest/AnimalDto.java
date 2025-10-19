@@ -19,7 +19,7 @@ public class AnimalDto {
 
   private String type;
 
-  private List<String> notes;
+  private String notes;
 
 
   public UUID getId() {
@@ -42,7 +42,7 @@ public class AnimalDto {
     return type;
   }
 
-  public List<String> getNotes() {
+  public String getNotes() {
     return notes;
   }
 
@@ -66,7 +66,7 @@ public class AnimalDto {
     this.type = type;
   }
 
-  public void setNotes(List<String> notes) {
+  public void setNotes(String notes) {
     this.notes = notes;
   }
 

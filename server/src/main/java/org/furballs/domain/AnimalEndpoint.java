@@ -21,7 +21,7 @@ public class AnimalEndpoint {
     private AnimalRepository repository;
 
     @GetMapping("/animals")
-    public List<AnimalDto> test() {
+    public List<AnimalDto> getAnimals() {
         Iterable<Animal> animals = repository.findAll();
         if(animals instanceof List) {
             return ((List<Animal>) animals).stream().map(AnimalDto::from).toList();
@@ -32,7 +32,7 @@ public class AnimalEndpoint {
     }
 
     @PostMapping("/animals")
-    public String testSave(@RequestBody AnimalDto dto) {
+    public String saveAnimal(@RequestBody AnimalDto dto) {
         Animal newAnimal = Animal.from(dto);
         newAnimal.setId(UUID.randomUUID());
         repository.save(newAnimal);

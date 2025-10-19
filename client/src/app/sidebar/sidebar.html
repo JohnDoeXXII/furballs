@@ -1,0 +1,14 @@
+<aside class="sidebar">
+  @if (sidebarVisible) {
+    <div class="sidebar-header" [hidden]="!sidebarVisible">
+      <strong>Navigation</strong>
+    </div>
+    <nav>
+      <ul>
+        <li><a (click)="navigateTo('intake')">Intake</a></li>
+        <li><a (click)="navigateTo('inventory')">Inventory</a></li>
+      </ul>
+    </nav>
+  }
+  <button (click)="toggleSidebar()">{{ sidebarVisible ? 'Show' : 'Hide' }}</button>
+</aside>

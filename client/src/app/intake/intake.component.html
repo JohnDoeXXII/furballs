@@ -1,0 +1,45 @@
+<div class="container">
+  <h2>Animal Intake</h2>
+
+  <form [formGroup]="animalIntake" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Name</label>
+      <input id="name" type="text" formControlName="name" />
+    </div>
+
+    <div>
+      <label for="shelterId">ID</label>
+      <input id="shelterId" type="text" formControlName="shelterId" />
+    </div>
+
+    <div>
+      <label for="type">Animal Type</label>
+      <select id="type" formControlName="type">
+        <option value="Cat">Cat</option>
+        <option value="Dog">Dog</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="dateOfIntake">Date of Intake</label>
+      <input id="dateOfIntake" type="date" formControlName="dateOfIntake" />
+    </div>
+
+    <div>
+      <label for="dateOfBirth">Date of Birth</label>
+      <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+    </div>
+
+    <div>
+      <label for="notes">Notes</label>
+      <textarea id="notes" formControlName="notes" maxlength="250" rows="4"></textarea>
+      @if (animalIntake.get('notes')?.hasError('maxlength')) {
+        <div>
+          Notes cannot be longer than 250 characters.
+        </div>
+      }
+    </div>
+
+    <button type="submit" [disabled]="animalIntake.invalid">Submit</button>
+  </form>
+</div>
