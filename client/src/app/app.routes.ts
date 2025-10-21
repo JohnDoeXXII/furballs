@@ -1,14 +1,20 @@
-import { Routes } from '@angular/router';
-import { importProvidersFrom } from '@angular/core';
+import { Route, Routes } from '@angular/router';
+
+export const inventoryRoute: Route = 
+	{
+		path: 'inventory',
+		loadComponent: () => import('./inventory/inventory.component').then(m => m.InventoryComponent)
+	};
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'intake', pathMatch: 'full' },
 	{
 		path: 'intake',
-		loadComponent: () => import('./intake/intake.component').then(m => m.IntakeComponent)
+		loadComponent: () => import('./animal-details/animal-details.component').then(m => m.AnimalDetailsComponent)
 	},
+	inventoryRoute,
 	{
-		path: 'inventory',
-		loadComponent: () => import('./inventory/inventory.component').then(m => m.InventoryComponent)
+		path: 'animal/:animalId',
+		loadComponent: () => import('./animal-details/animal-details.component').then(m => m.AnimalDetailsComponent)
 	}
 ];

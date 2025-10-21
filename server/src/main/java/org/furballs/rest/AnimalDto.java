@@ -103,6 +103,7 @@ public class AnimalDto {
 
   public static AnimalDto from(Animal animal) {
     AnimalDto dto = new AnimalDto();
+    dto.setId(animal.getId());
     dto.setShelterId(animal.getShelterId());
     dto.setType(animal.getType());
     dto.setName(animal.getName());

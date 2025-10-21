@@ -1,14 +1,19 @@
 <div class="container">
   <h2>Inventory</h2>
 
-  <div >
-        @if (animals$ | async; as animalList) {
-            <span>Yes, the server is running</span>
-            <p *ngIf="animalList.length === 0">No animals in inventory.</p>
-            <ul *ngIf="animalList.length > 0">
-              <li *ngFor="let a of animalList">{{ a.shelterId }} — {{ a.name }} ({{ a.type }})</li>
-            </ul>
-        } @else {
-            <span>No, the server is not running</span>
-        } 
+  @if (animals$ | async; as animalList) {
+  <div class="ag-theme-alpine" style="height: 1000px; width: 100%;">
+    <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      class="ag-grid"
+      [columnDefs]="columnDefs"
+      [rowData]="animalList"
+      [defaultColDef]="{ resizable: true }"
+      domLayout="autoHeight"
+      [animateRows]="true"
+    ></ag-grid-angular>
+  </div>
+   } @else {
+       <span>No, the server is not running</span>
+   }
 </div>

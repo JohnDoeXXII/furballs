@@ -23,7 +23,15 @@ export class AnimalService {
     return this.http.get<Animal[]>(this.baseUrl);
   }
 
+  getAnimalById(id: string): Observable<Animal> {
+    return this.http.get<Animal>(`${this.baseUrl}/${id}`);
+  }
+
   createAnimal(a: Animal): Observable<Animal> {
     return this.http.post<Animal>(this.baseUrl, a);
+  }
+
+  updateAnimal(a: Animal): Observable<Animal> {
+    return this.http.put<Animal>(`${this.baseUrl}/${a.id}`, a);
   }
 }
