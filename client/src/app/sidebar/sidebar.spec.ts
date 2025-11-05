@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Sidebar } from './sidebar';
 import { Router } from '@angular/router';
 import { provideZoneChangeDetection } from '@angular/core';
@@ -10,6 +10,7 @@ describe('Sidebar', () => {
 
   beforeEach(async () => {
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    routerSpy.navigate.and.returnValue(Promise.resolve(true)); 
 
     await TestBed.configureTestingModule({
       imports: [Sidebar],
@@ -34,20 +35,20 @@ describe('Sidebar', () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(['intake']);
   });
 
-  it('clicking nav link should call navigate', () => {
+  it('clicking nav link should call navigate', fakeAsync(() => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const firstLink = compiled.querySelector('nav ul li a');
+    const firstLink = compiled.querySelector(`*[data-testid='intake-button']`);
     expect(firstLink).toBeTruthy();
     (firstLink as HTMLElement).click();
-    expect(routerSpy.navigate).toHaveBeenCalled();
-  });
+    tick();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/intake']);
+  }));
 
   it('toggleSidebar should flip sidebarVisible and button should toggle it', () => {
     const initial = component.sidebarVisible;
     component.toggleSidebar();
     expect(component.sidebarVisible).toBe(!initial);
 
-    // Now click the button in template and ensure it toggles
     const btn = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
     btn.click();
     fixture.detectChanges();

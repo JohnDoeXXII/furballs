@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
   selector: 'sidebar',
   templateUrl: './sidebar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './sidebar.scss'
+  styleUrl: './sidebar.scss',
+  imports: []
 })
 export class Sidebar {
   sidebarVisible = true;

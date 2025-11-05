@@ -3,7 +3,6 @@ package org.furballs.rest;
 import org.furballs.domain.Animal;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -15,7 +14,7 @@ public class AnimalDto {
 
   private String name;
 
-  private LocalDate dob;
+  private LocalDate dateOfBirth;
 
   private String type;
 
@@ -34,8 +33,8 @@ public class AnimalDto {
     return name;
   }
 
-  public LocalDate getDob() {
-    return dob;
+  public LocalDate getDateOfBirth() {
+    return dateOfBirth;
   }
 
   public String getType() {
@@ -58,8 +57,8 @@ public class AnimalDto {
     this.name = name;
   }
 
-  public void setDob(LocalDate dob) {
-    this.dob = dob;
+  public void setDateOfBirth(LocalDate dateOfBirth) {
+    this.dateOfBirth = dateOfBirth;
   }
 
   public void setType(String type) {
@@ -79,14 +78,14 @@ public class AnimalDto {
     return Objects.equals(id, animalDto.id)
         && Objects.equals(shelterId, animalDto.shelterId)
         && Objects.equals(name, animalDto.name)
-        && Objects.equals(dob, animalDto.dob)
+        && Objects.equals(dateOfBirth, animalDto.dateOfBirth)
         && Objects.equals(type, animalDto.type)
         && Objects.equals(notes, animalDto.notes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, shelterId, name, dob, type, notes);
+    return Objects.hash(id, shelterId, name, dateOfBirth, type, notes);
   }
 
   @Override
@@ -95,7 +94,7 @@ public class AnimalDto {
         "id=" + id +
         ", shelterId='" + shelterId + '\'' +
         ", name='" + name + '\'' +
-        ", dob=" + dob +
+        ", dateOfBirth=" + dateOfBirth +
         ", type='" + type + '\'' +
         ", notes=" + notes +
         '}';
@@ -108,7 +107,7 @@ public class AnimalDto {
     dto.setType(animal.getType());
     dto.setName(animal.getName());
     dto.setNotes(animal.getNotes());
-    dto.setDob(animal.getDob());
+    dto.setDateOfBirth(animal.getDob());
     return dto;
   }
 }

@@ -3,6 +3,8 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { AnimalDetailsComponent } from './animal-details.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AnimalService } from '../services/animal.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('AnimalDetalsComponent', () => {
   let fixture: any;
@@ -10,12 +12,15 @@ describe('AnimalDetalsComponent', () => {
   let animalServiceSpy: jasmine.SpyObj<AnimalService>;
 
   beforeEach(async () => {
-    animalServiceSpy = jasmine.createSpyObj('AnimalService', ['createAnimal']);
+    animalServiceSpy = jasmine.createSpyObj('AnimalService', ['createAnimal', 'getAnimalById', 'getMaxShelterId']);
+    animalServiceSpy.getMaxShelterId.and.returnValue(of('20-100'));
     await TestBed.configureTestingModule({
       imports: [AnimalDetailsComponent, ReactiveFormsModule],
       providers: [
         provideZonelessChangeDetection(), 
-        { provide: AnimalService, useValue: animalServiceSpy }
+        { provide: AnimalService, useValue: animalServiceSpy },
+        { provide: Router, useValue: jasmine.createSpyObj('Router', ['navigate']) },
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: new Map() } } }
       ]
     }).compileComponents();
 

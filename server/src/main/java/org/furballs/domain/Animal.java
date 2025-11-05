@@ -6,7 +6,6 @@ import java.util.Objects;
 import org.furballs.rest.AnimalDto;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "animals")
@@ -114,7 +113,7 @@ public class Animal {
     animal.id = dto.getId();
     animal.shelterId = dto.getShelterId();
     animal.name = dto.getName();
-    animal.dob = dto.getDob();
+    animal.dob = dto.getDateOfBirth();
     animal.notes = dto.getNotes();
     animal.type = dto.getType();
     return animal;

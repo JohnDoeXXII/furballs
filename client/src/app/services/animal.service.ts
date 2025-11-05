@@ -24,7 +24,11 @@ export class AnimalService {
   }
 
   getAnimalById(id: string): Observable<Animal> {
-    return this.http.get<Animal>(`${this.baseUrl}/${id}`);
+    return this.http.get<Animal>(`${this.baseUrl}?id=${id}`);
+  }
+
+  getMaxShelterId(): Observable<string> {
+    return this.http.get<string>(`${this.baseUrl}/maxId`, { responseType: 'text' as 'json' });
   }
 
   createAnimal(a: Animal): Observable<Animal> {
@@ -32,6 +36,6 @@ export class AnimalService {
   }
 
   updateAnimal(a: Animal): Observable<Animal> {
-    return this.http.put<Animal>(`${this.baseUrl}/${a.id}`, a);
+    return this.http.put<Animal>(`${this.baseUrl}?id=${a.id}`, a);
   }
 }

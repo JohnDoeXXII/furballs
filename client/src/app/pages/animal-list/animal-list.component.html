@@ -1,0 +1,17 @@
+<div class="max-w-7xl mx-auto">
+  <h2 class="text-lg font-medium text-gray-900 mb-4">Inventory</h2>
+
+  <div class="ag-theme-alpine bg-white rounded shadow-sm" style="height: 600px; width: 100%;">
+    <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      [animateRows]="true"
+      class="ag-grid"
+      [columnDefs]="columnDefs"
+      [cacheQuickFilter]="true"
+      [defaultColDef]="{ resizable: true }"
+      domLayout="normal"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+    ></ag-grid-angular>
+  </div>
+</div>
