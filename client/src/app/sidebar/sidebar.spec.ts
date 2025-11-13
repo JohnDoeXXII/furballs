@@ -37,11 +37,13 @@ describe('Sidebar', () => {
 
   it('clicking nav link should call navigate', fakeAsync(() => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const firstLink = compiled.querySelector(`*[data-testid='intake-button']`);
-    expect(firstLink).toBeTruthy();
-    (firstLink as HTMLElement).click();
+    // find the nav anchor with text 'Contacts' (template uses text labels)
+    const anchors = Array.from(compiled.querySelectorAll('a')) as HTMLElement[];
+    const contactAnchor = anchors.find(a => a.textContent?.trim().startsWith('Contacts'));
+    expect(contactAnchor).toBeTruthy();
+    (contactAnchor as HTMLElement).click();
     tick();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/intake']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/contactz']);
   }));
 
   it('toggleSidebar should flip sidebarVisible and button should toggle it', () => {

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { AnimalDetailsComponent } from './animal-details.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AnimalService } from '../services/animal.service';
+import { AnimalService } from '../../services/animal.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 

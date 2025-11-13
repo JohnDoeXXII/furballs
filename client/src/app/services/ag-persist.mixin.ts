@@ -53,7 +53,7 @@ export class AgPersist {
     localStorage.setItem(`ag-persist-grid-settings-${this.gridId}`, json);
   }
   private safeJsonParse(storageKey: string) {
-    let nullableString = localStorage.getItem(`ag-persist-grid-settings-${this.gridId}`);
+    let nullableString = localStorage.getItem(storageKey);
     if (!nullableString) {
         return null;
     }

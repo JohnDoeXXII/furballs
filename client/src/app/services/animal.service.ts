@@ -23,8 +23,18 @@ export class AnimalService {
     return this.http.get<Animal[]>(this.baseUrl);
   }
 
+  /**
+   * Get a single animal by id. Uses RESTful `/animals/{id}` path.
+   */
   getAnimalById(id: string): Observable<Animal> {
-    return this.http.get<Animal>(`${this.baseUrl}?id=${id}`);
+    return this.http.get<Animal>(`${this.baseUrl}/${id}`);
+  }
+
+  /**
+   * Alias for `getAnimals()` to match other services naming.
+   */
+  getAll(): Observable<Animal[]> {
+    return this.getAnimals();
   }
 
   getMaxShelterId(): Observable<string> {
@@ -35,7 +45,28 @@ export class AnimalService {
     return this.http.post<Animal>(this.baseUrl, a);
   }
 
+  /**
+   * Alias for `createAnimal`.
+   */
+  create(a: Animal): Observable<Animal> {
+    return this.createAnimal(a);
+  }
+
+  /**
+   * Update an animal by id. Accepts either an id+body or an Animal with an `id`.
+   */
+  update(id: string, a: Animal): Observable<Animal> {
+    return this.http.put<Animal>(`${this.baseUrl}/${id}`, a);
+  }
+
   updateAnimal(a: Animal): Observable<Animal> {
-    return this.http.put<Animal>(`${this.baseUrl}?id=${a.id}`, a);
+    return this.update(a.id, a);
+  }
+
+  /**
+   * Delete an animal by id.
+   */
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

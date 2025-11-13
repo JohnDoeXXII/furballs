@@ -1,1 +1,20 @@
-<p>contact-list.component works!</p>
+<div class="max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold text-gray-900">Contact List</h1>
+    <app-link href="/contactz/new" class="btn btn-primary" text="Add Contact"></app-link>
+  </div>
+
+  <div class="ag-theme-alpine bg-white rounded shadow-sm" style="height: 600px; width: 100%;">
+    <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      [animateRows]="true"
+      class="ag-grid"
+      [columnDefs]="columnDefs"
+      [cacheQuickFilter]="true"
+      [defaultColDef]="{ resizable: true }"
+      domLayout="normal"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+    ></ag-grid-angular>
+  </div>
+</div>

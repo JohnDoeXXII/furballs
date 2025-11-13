@@ -1,6 +1,6 @@
 package org.furballs.rest;
 
-import org.furballs.domain.Animal;
+import org.furballs.domain.animal.Animal;
 
 import java.time.LocalDate;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package org.furballs.domain;
+package org.furballs.domain.animal;
 
 import java.time.Year;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class AnimalEndpoint {
         .map(str -> str.split("-")[1])
         .map(Integer::valueOf)
         .max(Integer::compareTo)
-        .map(max -> (Year.now().getValue() - 2000) + "-" + String.format("%03d", max))
+        .map(max -> (Year.now().getValue() - 2000) + "-" + String.format("%03d", max + 1))
         .orElseThrow();
   }
 

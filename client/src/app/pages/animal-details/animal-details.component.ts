@@ -1,18 +1,38 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Animal, AnimalService } from '../services/animal.service';
-import { catchError, forkJoin, map, Observable } from 'rxjs';
+import { Animal, AnimalService } from '../../services/animal.service';
+import { catchError, map, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ANIMAL_LIST_ROUTE } from '../app.routes';
+import { ANIMAL_LIST_ROUTE } from '../../app.routes';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+
 
 @Component({
   selector: 'app-animal-details',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FullCalendarModule],
   templateUrl: './animal-details.component.html'
 })
-export class AnimalDetailsComponent implements OnInit{
+export class AnimalDetailsComponent implements OnInit {
+
+  
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth',
+    plugins: [dayGridPlugin, interactionPlugin],
+    dateClick: (arg) => this.handleDateClick(arg),
+    events: [
+      { title: 'Neutering', date: new Date().toISOString().slice(0, 10) },
+      { 
+        title: 'Neuter Heal', 
+        start: new Date(new Date().getTime() + 86400000).toISOString().slice(0, 10), 
+        end: new Date(new Date().getTime() + 86400000 * 5).toISOString().slice(0, 10)
+      }
+    ]
+  };
 
   @Input("readMode")
   readMode: boolean = false;
@@ -67,6 +87,10 @@ export class AnimalDetailsComponent implements OnInit{
             )
             .subscribe();
             
+  }
+
+  handleDateClick(arg: any) {
+    alert('date click! ' + arg.dateStr);
   }
 
   private getAnimalSubmission(): Observable<Animal> {

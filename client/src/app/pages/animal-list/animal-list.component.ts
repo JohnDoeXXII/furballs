@@ -6,11 +6,12 @@ import { AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { LinkRendererComponent } from '../../components/link/link-renderer.component';
 import { AgPersist } from '../../services/ag-persist.mixin';
+import { Link } from "../../components/link/link.component";
 
 @Component({
   selector: 'app-animal-list',
   standalone: true,
-  imports: [CommonModule, AgGridModule],
+  imports: [CommonModule, AgGridModule, Link],
   templateUrl: './animal-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -27,7 +28,7 @@ export class AnimalListComponent implements OnInit {
       field: 'id',
       cellRenderer: LinkRendererComponent,
       cellRendererParams: {
-        getHref: (params: any) => `/animal/${params.value}`,
+        getHref: (params: any) => `/animalz/${params.id}`,
         text: 'View'
       },
       sortable: false,
@@ -35,13 +36,30 @@ export class AnimalListComponent implements OnInit {
       width: 100,
     },
     { field: 'type', headerName: 'Type', sortable: true, filter: true },
-    { field: 'age', headerName: 'Age', sortable: true, filter: 'agNumberColumnFilter' },
+    { 
+      field: 'dateOfBirth', 
+      headerName: 'Age (Months)', 
+      sortable: true, 
+      valueFormatter: (params: any | Date) => {
+        var dob = new Date(params.data.dateOfBirth);
+        if (dob instanceof Date) {
+          var months;
+          var now = new Date();
+          months = (now.getFullYear() - dob.getFullYear()) * 12;
+          months -= now.getMonth();
+          months += dob.getMonth();
+          return '' + (months <= 0 ? 0 : months);
+        } else {
+          return '';
+        }
+      }
+    },
   ];
 
   // grid row data
   rowData: Animal[] = [];
 
-  private agPersist = new AgPersist('some-unique-name');
+  private agPersist = new AgPersist('animal-list-preferences');
   public gridOptions = this.agPersist.setup();
 
   ngOnInit() {

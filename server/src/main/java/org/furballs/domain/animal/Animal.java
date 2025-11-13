@@ -1,4 +1,4 @@
-package org.furballs.domain;
+package org.furballs.domain.animal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

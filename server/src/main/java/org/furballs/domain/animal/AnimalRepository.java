@@ -1,4 +1,4 @@
-package org.furballs.domain;
+package org.furballs.domain.animal;
 
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;

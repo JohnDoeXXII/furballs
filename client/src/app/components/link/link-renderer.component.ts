@@ -13,11 +13,9 @@ export class LinkRendererComponent implements ICellRendererAngularComp {
   text: string = 'View';
 
   agInit(params: any): void {
-    if (params && params.value) {
+    if (params && params.getHref && params.data.id) {
       if (params.getHref && typeof params.getHref === 'function') {
-        this.href = params.getHref(params);
-      } else {
-        this.href = `/animal/${params.value}`;
+        this.href = params.getHref(params.data);
       }
     }
     if (params && params.text) this.text = params.text;
