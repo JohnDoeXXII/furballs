@@ -59,16 +59,17 @@ export class AnimalDetailsComponent implements OnInit {
   ngOnInit() {
     if (!this.animalId) {
       this.animalId = this.route.snapshot.paramMap.get('animalId');
-      this.animalService.getMaxShelterId()
-        .subscribe((maxId: string) => {
-          this.animalIntake.controls['shelterId'].setValue(maxId);
-        });
     }
 
     if (this.animalId) {
       this.animalService.getAnimalById(this.animalId)
         .subscribe( animal => {
           this.animalIntake.patchValue(animal);
+        });
+    } else {
+      this.animalService.getMaxShelterId()
+        .subscribe((maxId: string) => {
+          this.animalIntake.controls['shelterId'].setValue(maxId);
         });
     }
   }

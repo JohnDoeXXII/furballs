@@ -30,8 +30,8 @@ public class EventEndpoint {
     }
   }
 
-  @GetMapping(path = "/events", params = "id")
-  public EventDto getEventById(@RequestParam String id) {
+  @GetMapping(path = "/events/{id}")
+  public EventDto getEventById(@PathVariable String id) {
     return repository.findById(UUID.fromString(id))
         .map(EventDto::from)
         .orElseThrow();

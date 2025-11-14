@@ -51,7 +51,7 @@ describe('ContactService', () => {
     const payload: Contact = { id: '5', firstName: 'X', lastName: 'Y' } as Contact;
     service.updateContact(payload).subscribe(res => expect(res).toEqual(payload));
 
-    const req = httpMock.expectOne('/contacts?id=5');
+    const req = httpMock.expectOne('/contacts/5');
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual(payload);
     req.flush(payload);
@@ -61,7 +61,7 @@ describe('ContactService', () => {
     const mock: Contact = { id: '9', firstName: 'F', lastName: 'L' } as Contact;
     service.getContactById('9').subscribe(res => expect(res).toEqual(mock));
 
-    const req = httpMock.expectOne('/contacts?id=9');
+    const req = httpMock.expectOne('/contacts/9');
     expect(req.request.method).toBe('GET');
     req.flush(mock);
   });

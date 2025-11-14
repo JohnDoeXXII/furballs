@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Event, EventService } from '../../services/event.service';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { LinkRendererComponent } from '../../components/link/link-renderer.component';
 import { AgPersist } from '../../services/ag-persist.mixin';
-import { Link } from "../../components/link/link.component";
 import { Router } from '@angular/router';
+import { Link } from '../../components/link/link.component';
 
 @Component({
   selector: 'app-event-list',
@@ -45,7 +44,7 @@ export class EventListComponent implements OnInit {
       field: 'id',
       cellRenderer: LinkRendererComponent,
       cellRendererParams: {
-        getHref: (params: any) => `/events/${params.id}`,
+        getHref: (params: any) => `/eventz/${params.id}`,
         text: 'View'
       },
       sortable: false,

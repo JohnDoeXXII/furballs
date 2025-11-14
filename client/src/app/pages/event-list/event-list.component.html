@@ -1,19 +1,20 @@
-<div class="p-4">
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-bold">Events</h2>
-    <button 
-      (click)="createNew()" 
-      class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-    >
-      Create New Event
-    </button>
+<div class="max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold text-gray-900">Events</h1>
+    <app-link href="/eventz/new" class="btn btn-primary" text="Create Event"></app-link>
   </div>
-
-  <ag-grid-angular
-    class="ag-theme-quartz"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
-    [gridOptions]="gridOptions"
-    style="width: 100%; height: 500px"
-  ></ag-grid-angular>
+  
+  <div class="ag-theme-alpine bg-white rounded shadow-sm" style="height: 600px; width: 100%;">
+    <ag-grid-angular
+      style="width: 100%; height: 500px;"
+      [animateRows]="true"
+      class="ag-grid"
+      [columnDefs]="columnDefs"
+      [cacheQuickFilter]="true"
+      [defaultColDef]="{ resizable: true }"
+      domLayout="normal"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+    ></ag-grid-angular>
+  </div>
 </div>

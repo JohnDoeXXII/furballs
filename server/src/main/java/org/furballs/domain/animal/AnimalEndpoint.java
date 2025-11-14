@@ -1,9 +1,11 @@
 package org.furballs.domain.animal;
 
 import java.time.Year;
+import org.furballs.rest.EventDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,8 +37,8 @@ public class AnimalEndpoint {
     }
   }
 
-  @GetMapping(path = "/animals", params = "id")
-  public AnimalDto getMaxIdFromYear(@RequestParam String id) {
+  @GetMapping(path = "/animals/{id}")
+  public AnimalDto getMaxIdFromYear(@PathVariable String id) {
     return repository.findById(UUID.fromString(id))
         .map(AnimalDto::from)
         .orElseThrow();
@@ -67,8 +69,8 @@ public class AnimalEndpoint {
         .orElseThrow();
   }
 
-  @PutMapping(path="/animals", params = "id")
-  public AnimalDto updateAnimal(@RequestParam("id") String id, @RequestBody AnimalDto dto) {
+  @PutMapping(path="/animals/{id}")
+  public AnimalDto updateAnimal(@PathVariable("id") String id, @RequestBody AnimalDto dto) {
     Animal updatedAnimal = Animal.from(dto);
     repository.save(updatedAnimal);
     return repository.findById(UUID.fromString(id))

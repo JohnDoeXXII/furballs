@@ -14,7 +14,7 @@ export const CONTACT_LIST_ROUTE: Route =
 
 export const EVENT_LIST_ROUTE: Route =
 	{
-		path: 'events',
+		path: 'eventz',
 		loadComponent: () => import('./pages/event-list/event-list.component').then(m => m.EventListComponent)
 	};
 
@@ -44,11 +44,11 @@ export const routes: Routes = [
 	},
 	EVENT_LIST_ROUTE,
 	{
-		path: 'events/new',
+		path: 'eventz/new',
 		loadComponent: () => import('./pages/event-details/event-details.component').then(m => m.EventDetailsComponent)
 	},
 	{
-		path: 'events/:eventId',
+		path: 'eventz/:eventId',
 		loadComponent: () => import('./pages/event-details/event-details.component').then(m => m.EventDetailsComponent)
 	},
 	{

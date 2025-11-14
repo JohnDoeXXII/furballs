@@ -26,10 +26,10 @@ export class ContactService {
   }
   
   updateContact(a: Contact): Observable<Contact> {
-    return this.http.put<Contact>(`${this.baseUrl}?id=${a.id}`, a);
+    return this.http.put<Contact>(`${this.baseUrl}/${a.id}`, a);
   }
 
   getContactById(contactId: string): Observable<Contact> {
-    return this.http.get<Contact>(`${this.baseUrl}?id=${contactId}`);
+    return this.http.get<Contact>(`${this.baseUrl}/${contactId}`);
   }
 }
