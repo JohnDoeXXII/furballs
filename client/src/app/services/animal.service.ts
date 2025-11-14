@@ -22,9 +22,14 @@ export class AnimalService {
   getAnimals(): Observable<Animal[]> {
     return this.http.get<Animal[]>(this.baseUrl);
   }
+
   
   getAnimalById(id: string): Observable<Animal> {
     return this.http.get<Animal>(`${this.baseUrl}/${id}`);
+  }
+
+  getAll(): Observable<Animal[]> {
+    return this.getAnimals();
   }
 
   getMaxShelterId(): Observable<string> {

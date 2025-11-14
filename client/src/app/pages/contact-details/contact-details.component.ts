@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Contact, ContactService } from '../../services/contact.service';
+import { ContactService } from '../../services/contact.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map, Observable } from 'rxjs';
 import { CONTACT_LIST_ROUTE } from '../../app.routes';
 import { CommonModule } from '@angular/common';
+import { Contact } from '../../models/contact.model';
 
 @Component({
   selector: 'app-contact-details',

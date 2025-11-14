@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ContactListComponent } from './contact-list.component';
-import { Contact, ContactService } from '../../services/contact.service';
+import { ContactService } from '../../services/contact.service';
 import { of } from 'rxjs';
+import { Contact } from '../../models/contact.model';
 
 describe('ContactListComponent', () => {
   let fixture: any;

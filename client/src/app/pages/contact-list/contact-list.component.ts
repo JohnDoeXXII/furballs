@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { Contact, ContactService } from '../../services/contact.service';
+import { ContactService } from '../../services/contact.service';
 import { AgPersist } from '../../services/ag-persist.mixin';
 import { ColDef } from 'ag-grid-community';
 import { AgGridModule } from "ag-grid-angular";
 import { Link } from "../../components/link/link.component";
 import { LinkRendererComponent } from '../../components/link/link-renderer.component';
+import { Contact } from '../../models/contact.model';
 
 @Component({
   selector: 'app-contact-list.component',

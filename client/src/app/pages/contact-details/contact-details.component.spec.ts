@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ContactDetails } from './contact-details.component';
-import { ContactService, Contact } from '../../services/contact.service';
+import { ContactService } from '../../services/contact.service';
+import { Contact } from "../../models/contact.model";
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 

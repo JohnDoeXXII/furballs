@@ -1,0 +1,22 @@
+<div class="max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold text-gray-900">Users</h1>
+    <div class="flex gap-2">
+      <app-link href="/userz/register" class="btn btn-primary" text="Register User"></app-link>
+    </div>
+  </div>
+  
+  <div class="ag-theme-alpine bg-white rounded shadow-sm" style="height: 600px; width: 100%;">
+    <ag-grid-angular
+      style="width: 100%; height: 500px;"
+      [animateRows]="true"
+      class="ag-grid"
+      [columnDefs]="columnDefs"
+      [cacheQuickFilter]="true"
+      [defaultColDef]="{ resizable: true }"
+      domLayout="normal"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+    ></ag-grid-angular>
+  </div>
+</div>

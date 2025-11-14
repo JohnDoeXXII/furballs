@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ContactService, Contact } from './contact.service';
+import { ContactService } from './contact.service';
 import { provideHttpClient } from '@angular/common/http';
+import { Contact } from '../models/contact.model';
 
 describe('ContactService', () => {
   let service: ContactService;

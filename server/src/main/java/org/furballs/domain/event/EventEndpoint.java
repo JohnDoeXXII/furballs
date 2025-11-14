@@ -60,9 +60,4 @@ public class EventEndpoint {
     Event saved = repository.save(event);
     return EventDto.from(saved);
   }
-
-  @DeleteMapping("/events/{id}")
-  public void deleteEvent(@PathVariable String id) {
-    repository.deleteById(UUID.fromString(id));
-  }
 }

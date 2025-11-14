@@ -18,6 +18,12 @@ export const EVENT_LIST_ROUTE: Route =
 		loadComponent: () => import('./pages/event-list/event-list.component').then(m => m.EventListComponent)
 	};
 
+export const USER_LIST_ROUTE: Route =
+	{
+		path: 'userz',
+		loadComponent: () => import('./pages/user-list/user-list.component').then(m => m.UserListComponent)
+	};
+
 export const routes: Routes = [
 	{ path: '', redirectTo: ANIMAL_LIST_ROUTE.path, pathMatch: 'full' },
 	{
@@ -50,6 +56,19 @@ export const routes: Routes = [
 	{
 		path: 'eventz/:eventId',
 		loadComponent: () => import('./pages/event-details/event-details.component').then(m => m.EventDetailsComponent)
+	},
+	USER_LIST_ROUTE,
+	{
+		path: 'userz/register',
+		loadComponent: () => import('./pages/user-registration/user-registration.component').then(m => m.UserRegistrationComponent)
+	},
+	{
+		path: 'userz/new',
+		loadComponent: () => import('./pages/user-details/user-details.component').then(m => m.UserDetailsComponent)
+	},
+	{
+		path: 'userz/:userId',
+		loadComponent: () => import('./pages/user-details/user-details.component').then(m => m.UserDetailsComponent)
 	},
 	{
 		path: '**',
