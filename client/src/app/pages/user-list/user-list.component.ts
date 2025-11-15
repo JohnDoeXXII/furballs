@@ -42,7 +42,8 @@ export class UserListComponent implements OnInit {
       { field: 'email', headerName: 'Email', sortable: true, filter: true },
       { field: 'firstName', headerName: 'First Name', sortable: true, filter: true },
       { field: 'lastName', headerName: 'Last Name', sortable: true, filter: true },
-      { field: 'role', headerName: 'Role', sortable: true, filter: true },
+      { field: 'phone', headerName: 'Phone', sortable: true, filter: true },
+      { field: 'isAdmin', headerName: 'Admin', sortable: true, filter: true },
       {
         headerName: 'Inspect',
         field: 'id',

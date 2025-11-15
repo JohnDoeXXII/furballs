@@ -21,6 +21,8 @@ public class UserDto {
   @JsonProperty("isAdmin")
   private boolean isAdmin;
 
+  private String phone;
+
   public UserDto() {
   }
 
@@ -31,6 +33,7 @@ public class UserDto {
     this.firstName = user.getFirstName();
     this.lastName = user.getLastName();
     this.isAdmin = user.isAdmin();
+    this.phone = user.getPhone();
   }
 
   public static UserDto from(User user) {
@@ -85,6 +88,14 @@ public class UserDto {
     isAdmin = admin;
   }
 
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -95,23 +106,25 @@ public class UserDto {
         && Objects.equals(email, userDto.email)
         && Objects.equals(firstName, userDto.firstName)
         && Objects.equals(lastName, userDto.lastName)
-        && isAdmin == userDto.isAdmin;
+        && isAdmin == userDto.isAdmin
+        && Objects.equals(phone, userDto.phone);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, email, firstName, lastName, isAdmin);
+    return Objects.hash(id, username, email, firstName, lastName, isAdmin, phone);
   }
 
   @Override
   public String toString() {
     return "UserDto{"
         + "id=" + id
-        + ", username='" + username + '\"'
-        + ", email='" + email + '\"'
-        + ", firstName='" + firstName + '\"'
-        + ", lastName='" + lastName + '\"'
+        + ", username='" + username + '\''
+        + ", email='" + email + '\''
+        + ", firstName='" + firstName + '\''
+        + ", lastName='" + lastName + '\''
         + ", isAdmin=" + isAdmin
+        + ", phone='" + phone + '\''
         + '}';
   }
 }

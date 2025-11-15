@@ -60,13 +60,8 @@ public class UserEndpoint {
   @PutMapping("/users/{id}")
   @AdminOnly
   public UserDto updateUser(@PathVariable String id, @RequestBody UserDto userDto) {
-    UUID userId = UUID.fromString(id);
-    User user = repository.findById(userId).orElseThrow();
-    user.setUsername(userDto.getUsername());
-    user.setEmail(userDto.getEmail());
-    user.setFirstName(userDto.getFirstName());
-    user.setLastName(userDto.getLastName());
-    user.setAdmin(userDto.isAdmin());
+    User user = User.from(userDto);
+    user.setId(UUID.fromString(id));
     User saved = repository.save(user);
     return UserDto.from(saved);
   }
@@ -108,14 +103,9 @@ public class UserEndpoint {
   @PostMapping("/users/register")
   @AdminOnly
   public UserDto registerUser(@RequestBody RegisterUserDto registerDto) {
-    User user = new User();
+    User user = User.from(registerDto);
     LocalDateTime now = LocalDateTime.now();
     user.setId(UUID.randomUUID());
-    user.setUsername(registerDto.getUsername());
-    user.setEmail(registerDto.getEmail());
-    user.setFirstName(registerDto.getFirstName());
-    user.setLastName(registerDto.getLastName());
-    user.setAdmin(registerDto.isAdmin());
     user.setPasswordUpdateTimestamp(now);
 
     // Hash the password before storing

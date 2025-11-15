@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import java.util.Objects;
 import java.util.UUID;
 import java.time.LocalDateTime;
+import org.furballs.rest.UserDto;
 
 @Entity(name = "users")
 public class User {
@@ -21,6 +22,8 @@ public class User {
   private String lastName;
 
   private boolean isAdmin;
+
+  private String phone;
 
   private String passwordHash;
 
@@ -79,6 +82,14 @@ public class User {
     isAdmin = admin;
   }
 
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
   public String getPasswordHash() {
     return passwordHash;
   }
@@ -107,26 +118,40 @@ public class User {
         && Objects.equals(firstName, user.firstName)
         && Objects.equals(lastName, user.lastName)
         && isAdmin == user.isAdmin
+        && Objects.equals(phone, user.phone)
         && Objects.equals(passwordHash, user.passwordHash)
         && Objects.equals(passwordUpdateTimestamp, user.passwordUpdateTimestamp);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, email, firstName, lastName, isAdmin, passwordHash, passwordUpdateTimestamp);
+    return Objects.hash(id, username, email, firstName, lastName, isAdmin, phone, passwordHash, passwordUpdateTimestamp);
   }
 
   @Override
   public String toString() {
     return "User{"
         + "id=" + id
-        + ", username='" + username + '\"'
-        + ", email='" + email + '\"'
-        + ", firstName='" + firstName + '\"'
-        + ", lastName='" + lastName + '\"'
+        + ", username='" + username + '\''
+        + ", email='" + email + '\''
+        + ", firstName='" + firstName + '\''
+        + ", lastName='" + lastName + '\''
         + ", isAdmin=" + isAdmin
-        + ", passwordHash='" + passwordHash + '\"'
+        + ", phone='" + phone + '\''
+        + ", passwordHash='" + passwordHash + '\''
         + ", passwordUpdateTimestamp=" + passwordUpdateTimestamp
         + '}';
+  }
+
+  public static User from(UserDto userDto) {
+    User user = new User();
+    user.id = userDto.getId();
+    user.username = userDto.getUsername();
+    user.email = userDto.getEmail();
+    user.firstName = userDto.getFirstName();
+    user.lastName = userDto.getLastName();
+    user.isAdmin = userDto.isAdmin();
+    user.phone = userDto.getPhone();
+    return user;
   }
 }

@@ -2,8 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { ContactService } from '../../services/contact.service';
 import { Router } from '@angular/router';
 import { UserRegistration } from '../../models/user.model';
+import { Contact } from '../../models/contact.model';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-user-registration',
@@ -18,7 +21,7 @@ export class UserRegistrationComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
-    role: new FormControl(''),
+    phone: new FormControl(''),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     confirmPassword: new FormControl('', [Validators.required])
   });
@@ -29,6 +32,7 @@ export class UserRegistrationComponent {
 
   constructor(
     private userService: UserService,
+    private contactService: ContactService,
     private router: Router
   ) {}
 
@@ -52,6 +56,7 @@ export class UserRegistrationComponent {
       email: formValue.email,
       firstName: formValue.firstName,
       lastName: formValue.lastName,
+      phone: formValue.phone,
       isAdmin: formValue.isAdmin || undefined,
       password: formValue.password
     };
@@ -59,13 +64,23 @@ export class UserRegistrationComponent {
     this.loading = true;
     this.error = null;
 
-    this.userService.create(userRegistration).subscribe({
+    this.userService.create(userRegistration).pipe(
+      switchMap((createdUser) => {
+        // Create corresponding contact information linked to the user
+        const contact: Contact = {
+          firstName: userRegistration.firstName,
+          lastName: userRegistration.lastName,
+          email: userRegistration.email,
+          phone: userRegistration.phone,
+          userId: createdUser.id
+        };
+        return this.contactService.createContact(contact);
+      })
+    ).subscribe({
       next: () => {
         this.success = true;
         this.loading = false;
-        setTimeout(() => {
-          this.router.navigate(['/userz']);
-        }, 2000);
+        this.router.navigate(['/userz']);
       },
       error: (err) => {
         this.error = 'Failed to register user. Please try again.';

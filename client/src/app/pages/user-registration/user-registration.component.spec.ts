@@ -3,6 +3,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { UserRegistrationComponent } from './user-registration.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { ContactService } from '../../services/contact.service';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
@@ -10,10 +11,12 @@ describe('UserRegistrationComponent', () => {
   let fixture: any;
   let component: UserRegistrationComponent;
   let userServiceSpy: jasmine.SpyObj<UserService>;
+  let contactServiceSpy: jasmine.SpyObj<ContactService>;
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     userServiceSpy = jasmine.createSpyObj('UserService', ['create']);
+    contactServiceSpy = jasmine.createSpyObj('ContactService', ['createContact']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
@@ -21,6 +24,7 @@ describe('UserRegistrationComponent', () => {
       providers: [
         provideZonelessChangeDetection(),
         { provide: UserService, useValue: userServiceSpy },
+        { provide: ContactService, useValue: contactServiceSpy },
         { provide: Router, useValue: routerSpy }
       ]
     }).compileComponents();
@@ -40,7 +44,6 @@ describe('UserRegistrationComponent', () => {
       expect(component.registrationForm.get('email')).toBeTruthy();
       expect(component.registrationForm.get('firstName')).toBeTruthy();
       expect(component.registrationForm.get('lastName')).toBeTruthy();
-      expect(component.registrationForm.get('role')).toBeTruthy();
       expect(component.registrationForm.get('password')).toBeTruthy();
       expect(component.registrationForm.get('confirmPassword')).toBeTruthy();
     });
@@ -82,13 +85,22 @@ describe('UserRegistrationComponent', () => {
 
   describe('registration tests', () => {
     it('should register user successfully', () => {
-      userServiceSpy.create.and.returnValue(of({
+      const createdUser = {
         id: '1',
         username: 'testuser',
         email: 'test@example.com',
         firstName: 'Test',
         lastName: 'User'
-      }));
+      };
+      const createdContact = {
+        id: '1',
+        firstName: 'Test',
+        lastName: 'User',
+        email: 'test@example.com'
+      };
+
+      userServiceSpy.create.and.returnValue(of(createdUser));
+      contactServiceSpy.createContact.and.returnValue(of(createdContact));
 
       component.registrationForm.patchValue({
         username: 'testuser',
@@ -102,6 +114,13 @@ describe('UserRegistrationComponent', () => {
       component.registerUser();
 
       expect(userServiceSpy.create).toHaveBeenCalled();
+      expect(contactServiceSpy.createContact).toHaveBeenCalledWith({
+        firstName: 'Test',
+        lastName: 'User',
+        email: 'test@example.com',
+        phone: '',
+        userId: '1'
+      });
       expect(component.success).toBeTrue();
       expect(component.error).toBeNull();
     });
@@ -154,6 +173,74 @@ describe('UserRegistrationComponent', () => {
 
       expect(component.error).toBe('Failed to register user. Please try again.');
       expect(component.loading).toBeFalse();
+    });
+
+    it('should handle contact creation error', () => {
+      const createdUser = {
+        id: '1',
+        username: 'testuser',
+        email: 'test@example.com',
+        firstName: 'Test',
+        lastName: 'User'
+      };
+
+      userServiceSpy.create.and.returnValue(of(createdUser));
+      contactServiceSpy.createContact.and.returnValue(throwError(() => new Error('Contact creation failed')));
+
+      component.registrationForm.patchValue({
+        username: 'testuser',
+        email: 'test@example.com',
+        firstName: 'Test',
+        lastName: 'User',
+        password: 'password123',
+        confirmPassword: 'password123'
+      });
+
+      component.registerUser();
+
+      expect(userServiceSpy.create).toHaveBeenCalled();
+      expect(contactServiceSpy.createContact).toHaveBeenCalled();
+      expect(component.error).toBe('Failed to register user. Please try again.');
+      expect(component.loading).toBeFalse();
+    });
+
+    it('should create contact with correct information from user registration', () => {
+      const createdUser = {
+        id: '2',
+        username: 'anotheruser',
+        email: 'another@example.com',
+        firstName: 'Another',
+        lastName: 'Person'
+      };
+      const createdContact = {
+        id: '2',
+        firstName: 'Another',
+        lastName: 'Person',
+        email: 'another@example.com'
+      };
+
+      userServiceSpy.create.and.returnValue(of(createdUser));
+      contactServiceSpy.createContact.and.returnValue(of(createdContact));
+
+      component.registrationForm.patchValue({
+        username: 'anotheruser',
+        email: 'another@example.com',
+        firstName: 'Another',
+        lastName: 'Person',
+        password: 'securepass123',
+        confirmPassword: 'securepass123'
+      });
+
+      component.registerUser();
+
+      expect(contactServiceSpy.createContact).toHaveBeenCalledWith({
+        firstName: 'Another',
+        lastName: 'Person',
+        email: 'another@example.com',
+        phone: '',
+        userId: '2'
+      });
+      expect(component.success).toBeTrue();
     });
   });
 

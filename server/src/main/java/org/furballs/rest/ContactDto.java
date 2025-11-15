@@ -10,6 +10,7 @@ public class ContactDto {
   public String phone;
   public String email;
   public String id;
+  public String userId;
 
   public static ContactDto from(Contact contact) {
     ContactDto out = new ContactDto();
@@ -18,6 +19,7 @@ public class ContactDto {
     out.lastName = contact.getLastName();
     out.phone = contact.getPhone();
     out.email = contact.getEmail();
+    out.userId = contact.getUserId() != null ? contact.getUserId().toString() : null;
     return out;
   }
 
@@ -61,6 +63,14 @@ public class ContactDto {
     this.id = id;
   }
 
+  public String getUserId() {
+    return userId;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) {
@@ -71,12 +81,13 @@ public class ContactDto {
         && Objects.equals(lastName, that.lastName)
         && Objects.equals(phone, that.phone)
         && Objects.equals(email, that.email)
-        && Objects.equals(id, that.id);
+        && Objects.equals(id, that.id)
+        && Objects.equals(userId, that.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, firstName, lastName, phone, email);
+    return Objects.hash(id, firstName, lastName, phone, email, userId);
   }
 
   @Override
@@ -87,6 +98,7 @@ public class ContactDto {
         ", phone='" + phone + '\'' +
         ", email='" + email + '\'' +
         ", id=" + id +
+        ", userId=" + userId +
         '}';
   }
 }

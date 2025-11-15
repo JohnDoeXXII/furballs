@@ -25,7 +25,8 @@ export class UserDetailsComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
-    role: new FormControl('')
+    phone: new FormControl(''),
+    isAdmin: new FormControl(false)
   });
 
   user$: Observable<User> | null = null;
@@ -58,7 +59,8 @@ export class UserDetailsComponent implements OnInit {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          isAdmin: user.isAdmin || ''
+          phone: user.phone || '',
+          isAdmin: user.isAdmin || false
         });
         this.loading = false;
         return user;
@@ -89,7 +91,8 @@ export class UserDetailsComponent implements OnInit {
       email: formValue.email,
       firstName: formValue.firstName,
       lastName: formValue.lastName,
-      isAdmin: formValue.isAdmin || '',
+      phone: formValue.phone || '',
+      isAdmin: formValue.isAdmin || false,
       password: formValue.password || ''
     };
 

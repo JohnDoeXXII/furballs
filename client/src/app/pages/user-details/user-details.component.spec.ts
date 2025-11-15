@@ -114,22 +114,4 @@ describe('UserDetailsComponent', () => {
       expect(lastNameControl?.valid).toBeTrue();
     });
   });
-
-  describe('role field tests', () => {
-    it('should exist', () => {
-      expect(component.userForm.get('role')).toBeTruthy();
-    });
-
-    it('should be optional and valid when empty', () => {
-      const roleControl = component.userForm.get('role');
-      roleControl?.setValue('');
-      expect(roleControl?.valid).toBeTrue();
-    });
-
-    it('should be valid when set with a value', () => {
-      const roleControl = component.userForm.get('role');
-      roleControl?.setValue('admin');
-      expect(roleControl?.valid).toBeTrue();
-    });
-  });
 });
