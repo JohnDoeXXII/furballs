@@ -24,7 +24,7 @@ public class RegisterUserDto extends UserDto {
         + ", email='" + getEmail() + '\''
         + ", firstName='" + getFirstName() + '\''
         + ", lastName='" + getLastName() + '\''
-        + ", role='" + getRole() + '\''
+        + ", isAdmin=" + isAdmin()
         + ", password='[REDACTED]'"
         + '}';
   }

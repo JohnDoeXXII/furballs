@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 import { UserLoginComponent } from './user-login.component';
 import { UserService, LoginResponse } from '../../services/user.service';
 import { of, throwError } from 'rxjs';
+import { TestUser } from '../../../test-resources/test-user.model';
 
 describe('UserLoginComponent', () => {
   let component: UserLoginComponent;
@@ -51,14 +52,11 @@ describe('UserLoginComponent', () => {
   it('should call userService.login on form submit', () => {
     const mockResponse: LoginResponse = {
       token: 'fake-jwt-token',
-      user: {
+      user: TestUser.createUser({
         id: '1',
         username: 'testuser',
-        email: 'test@example.com',
-        firstName: 'Test',
-        lastName: 'User',
-        role: 'user'
-      }
+        email: 'test@example.com'
+      })
     };
 
     spyOn(userService, 'login').and.returnValue(of(mockResponse));

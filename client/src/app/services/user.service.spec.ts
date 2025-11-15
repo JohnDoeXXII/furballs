@@ -4,6 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { UserService, LoginResponse } from './user.service';
 import { User, UserRegistration } from '../models/user.model';
 import { SessionService } from './session.service';
+import { TestUser } from '../../test-resources/test-user.model';
 
 describe('UserService', () => {
   const MOCK_USER: User = { 
@@ -12,7 +13,7 @@ describe('UserService', () => {
     email: 'user2@example.com', 
     firstName: 'Second', 
     lastName: 'User', 
-    role: 'user' 
+    isAdmin: false
   };    
   let service: UserService;
   let httpMock: HttpTestingController;
@@ -42,7 +43,7 @@ describe('UserService', () => {
 
   it('should get all users', () => {
     const mockUsers: User[] = [
-      { id: '1', username: 'user1', email: 'user1@example.com', firstName: 'First', lastName: 'User', role: 'admin' },
+      TestUser.createUser(),
       MOCK_USER
     ];
 
@@ -57,7 +58,7 @@ describe('UserService', () => {
   });
 
   it('should get user by id', () => {
-    const mockUser: User = { id: '1', username: 'user1', email: 'user1@example.com', firstName: 'First', lastName: 'User', role: 'admin' };
+    const mockUser = TestUser.createUser();
 
     service.getById('1').subscribe(user => {
       expect(user).toEqual(mockUser);

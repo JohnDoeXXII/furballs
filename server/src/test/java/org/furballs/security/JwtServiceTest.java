@@ -3,6 +3,8 @@ package org.furballs.security;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.jsonwebtoken.Claims;
+
+import org.checkerframework.checker.units.qual.t;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,19 +16,19 @@ class JwtServiceTest {
   private JwtService jwtService;
   private UUID testUserId;
   private String testUsername;
-  private String testRole;
+  private boolean isAdmin;
 
   @BeforeEach
   void setUp() {
     jwtService = new JwtService();
     testUserId = UUID.randomUUID();
     testUsername = "testuser";
-    testRole = "USER";
+    isAdmin = true;
   }
 
   @Test
   void testGenerateToken() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     
     assertNotNull(token);
     assertFalse(token.isEmpty());
@@ -35,7 +37,7 @@ class JwtServiceTest {
 
   @Test
   void testExtractUsername() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     String extractedUsername = jwtService.extractUsername(token);
     
     assertEquals(testUsername, extractedUsername);
@@ -43,24 +45,24 @@ class JwtServiceTest {
 
   @Test
   void testExtractUserId() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     UUID extractedUserId = jwtService.extractUserId(token);
     
     assertEquals(testUserId, extractedUserId);
   }
 
   @Test
-  void testExtractRole() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
-    String extractedRole = jwtService.extractRole(token);
+  void testExtractIsAdmin() {
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
+    Boolean extractedIsAdmin = jwtService.extractIsAdmin(token);
     
-    assertEquals(testRole, extractedRole);
+    assertEquals(isAdmin, extractedIsAdmin);
   }
 
   @Test
   void testExtractExpiration() {
     Date beforeGeneration = new Date();
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     Date afterGeneration = new Date();
     
     Date expiration = jwtService.extractExpiration(token);
@@ -75,7 +77,7 @@ class JwtServiceTest {
 
   @Test
   void testValidateToken_ValidToken() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     
     Boolean isValid = jwtService.validateToken(token, testUsername);
     
@@ -84,7 +86,7 @@ class JwtServiceTest {
 
   @Test
   void testValidateToken_WrongUsername() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     
     Boolean isValid = jwtService.validateToken(token, "wronguser");
     
@@ -93,20 +95,20 @@ class JwtServiceTest {
 
   @Test
   void testTokenContainsAllClaims() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     
     String extractedUsername = jwtService.extractUsername(token);
     UUID extractedUserId = jwtService.extractUserId(token);
-    String extractedRole = jwtService.extractRole(token);
+    Boolean extractedIsAdmin = jwtService.extractIsAdmin(token);
     
     assertEquals(testUsername, extractedUsername);
     assertEquals(testUserId, extractedUserId);
-    assertEquals(testRole, extractedRole);
+    assertEquals(isAdmin, extractedIsAdmin);
   }
 
   @Test
   void testExtractClaim_CustomClaim() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     
     String userId = jwtService.extractClaim(token, claims -> claims.get("userId", String.class));
     
@@ -115,7 +117,7 @@ class JwtServiceTest {
 
   @Test
   void testTokenIssuedAtIsBeforeExpiration() {
-    String token = jwtService.generateToken(testUserId, testUsername, testRole);
+    String token = jwtService.generateToken(testUserId, testUsername, isAdmin);
     
     Date issuedAt = jwtService.extractClaim(token, Claims::getIssuedAt);
     Date expiration = jwtService.extractExpiration(token);
@@ -130,23 +132,14 @@ class JwtServiceTest {
     String username1 = "user1";
     String username2 = "user2";
     
-    String token1 = jwtService.generateToken(userId1, username1, "USER");
-    String token2 = jwtService.generateToken(userId2, username2, "ADMIN");
+    String token1 = jwtService.generateToken(userId1, username1, false);
+    String token2 = jwtService.generateToken(userId2, username2, true);
     
     assertEquals(username1, jwtService.extractUsername(token1));
     assertEquals(username2, jwtService.extractUsername(token2));
     assertEquals(userId1, jwtService.extractUserId(token1));
     assertEquals(userId2, jwtService.extractUserId(token2));
-    assertEquals("USER", jwtService.extractRole(token1));
-    assertEquals("ADMIN", jwtService.extractRole(token2));
-  }
-
-  @Test
-  void testTokenWithNullRole() {
-    String token = jwtService.generateToken(testUserId, testUsername, null);
-    
-    String extractedRole = jwtService.extractRole(token);
-    
-    assertNull(extractedRole);
+    assertEquals(false, jwtService.extractIsAdmin(token1));
+    assertEquals(true, jwtService.extractIsAdmin(token2));
   }
 }

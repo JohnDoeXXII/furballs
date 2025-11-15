@@ -29,10 +29,10 @@ CREATE SCHEMA shelter
       email text,
       first_name text,
       last_name text,
-      role text,
+      is_admin boolean,
       password_hash text,
       password_update_timestamp timestamp
     );
     
 INSERT INTO shelter.users VALUES
-	('94f74a94-f1ff-4669-bc34-b694639bd3f0',	'admin',	'asdf@asdf.com',	'John',	'Weber',	'arch',	'90b813664f8cc042cb074f5099b269793c5274c4c7c9f0519f144f93d04ef4f4',	'2025-11-14 15:45:25.390606');
+	('94f74a94-f1ff-4669-bc34-b694639bd3f0',	'admin',	'asdf@asdf.com',	'John',	'Weber',	true,	'90b813664f8cc042cb074f5099b269793c5274c4c7c9f0519f144f93d04ef4f4',	'2025-11-14 15:45:25.390606');

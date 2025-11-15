@@ -122,9 +122,7 @@
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>First Name:</strong> {{ user.firstName }}</p>
     <p><strong>Last Name:</strong> {{ user.lastName }}</p>
-    @if (user.role) {
-    <p><strong>Role:</strong> {{ user.role }}</p>
-    }
+    <p><strong>Admin:</strong> {{ user.isAdmin }}</p>
   </div>
   }
 </div>

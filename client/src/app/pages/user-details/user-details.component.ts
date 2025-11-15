@@ -58,7 +58,7 @@ export class UserDetailsComponent implements OnInit {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          role: user.role || ''
+          isAdmin: user.isAdmin || ''
         });
         this.loading = false;
         return user;
@@ -89,7 +89,7 @@ export class UserDetailsComponent implements OnInit {
       email: formValue.email,
       firstName: formValue.firstName,
       lastName: formValue.lastName,
-      role: formValue.role || '',
+      isAdmin: formValue.isAdmin || '',
       password: formValue.password || ''
     };
 

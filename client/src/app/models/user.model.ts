@@ -2,9 +2,9 @@ export interface User {
   username: string;
   id?: string;
   email: string;
-  firstName: string; // YYYY-MM-DD
+  firstName: string;
   lastName: string;
-  role?: string;
+  isAdmin?: boolean;
 }
 
 export interface UserRegistration extends User {

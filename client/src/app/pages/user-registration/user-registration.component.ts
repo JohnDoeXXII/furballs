@@ -52,7 +52,7 @@ export class UserRegistrationComponent {
       email: formValue.email,
       firstName: formValue.firstName,
       lastName: formValue.lastName,
-      role: formValue.role || undefined,
+      isAdmin: formValue.isAdmin || undefined,
       password: formValue.password
     };
 

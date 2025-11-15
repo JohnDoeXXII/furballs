@@ -3,7 +3,6 @@ package org.furballs.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -11,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Service
@@ -27,11 +27,11 @@ public class JwtService {
     return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
   }
 
-  public String generateToken(UUID userId, String username, String role) {
+  public String generateToken(UUID userId, String username, boolean isAdmin) {
     Map<String, Object> claims = new HashMap<>();
-    claims.put("userId", userId);
+    claims.put("userId", userId.toString());
     claims.put("username", username);
-    claims.put("role", role);
+    claims.put("isAdmin", isAdmin);
     
     return createToken(claims, username);
   }
@@ -53,13 +53,13 @@ public class JwtService {
     return extractClaim(token, Claims::getSubject);
   }
 
-  public String extractRole(String token) {
-    return extractClaim(token, claims -> claims.get("role", String.class));
+  public UUID extractUserId(String token) {
+    String userIdStr = extractClaim(token, claims -> claims.get("userId", String.class));
+    return UUID.fromString(userIdStr);
   }
 
-  public UUID extractUserId(String token) {
-    return UUID.fromString(
-        extractClaim(token, claims -> claims.get("userId", String.class)));
+  public boolean extractIsAdmin(String token) {
+    return extractClaim(token, claims -> claims.get("isAdmin", Boolean.class));
   }
 
   public Date extractExpiration(String token) {

@@ -20,7 +20,7 @@ public class User {
 
   private String lastName;
 
-  private String role;
+  private boolean isAdmin;
 
   private String passwordHash;
 
@@ -71,12 +71,12 @@ public class User {
     this.lastName = lastName;
   }
 
-  public String getRole() {
-    return role;
+  public boolean isAdmin() {
+    return isAdmin;
   }
 
-  public void setRole(String role) {
-    this.role = role;
+  public void setAdmin(boolean admin) {
+    isAdmin = admin;
   }
 
   public String getPasswordHash() {
@@ -106,26 +106,26 @@ public class User {
         && Objects.equals(email, user.email)
         && Objects.equals(firstName, user.firstName)
         && Objects.equals(lastName, user.lastName)
-        && Objects.equals(role, user.role)
+        && isAdmin == user.isAdmin
         && Objects.equals(passwordHash, user.passwordHash)
         && Objects.equals(passwordUpdateTimestamp, user.passwordUpdateTimestamp);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, email, firstName, lastName, role, passwordHash, passwordUpdateTimestamp);
+    return Objects.hash(id, username, email, firstName, lastName, isAdmin, passwordHash, passwordUpdateTimestamp);
   }
 
   @Override
   public String toString() {
     return "User{"
         + "id=" + id
-        + ", username='" + username + '\''
-        + ", email='" + email + '\''
-        + ", firstName='" + firstName + '\''
-        + ", lastName='" + lastName + '\''
-        + ", role='" + role + '\''
-        + ", passwordHash='" + passwordHash + '\''
+        + ", username='" + username + '\"'
+        + ", email='" + email + '\"'
+        + ", firstName='" + firstName + '\"'
+        + ", lastName='" + lastName + '\"'
+        + ", isAdmin=" + isAdmin
+        + ", passwordHash='" + passwordHash + '\"'
         + ", passwordUpdateTimestamp=" + passwordUpdateTimestamp
         + '}';
   }

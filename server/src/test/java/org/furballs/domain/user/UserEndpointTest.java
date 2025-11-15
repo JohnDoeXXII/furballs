@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 
 import org.furballs.rest.LoginRequestDto;
 import org.furballs.rest.LoginResponseDto;
-import org.furballs.rest.UserDto;
 import org.furballs.security.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +53,7 @@ class UserEndpointTest {
     testUser.setEmail("test@example.com");
     testUser.setFirstName("Test");
     testUser.setLastName("User");
-    testUser.setRole("USER");
+    testUser.setAdmin(false);
     testUser.setPasswordHash(testPasswordHash);
     testUser.setPasswordUpdateTimestamp(passwordTimestamp);
   }
@@ -69,7 +68,7 @@ class UserEndpointTest {
     String expectedToken = "fake-jwt-token-12345";
 
     when(repository.findByUsername(testUsername)).thenReturn(Optional.of(testUser));
-    when(jwtService.generateToken(testUserId, testUsername, "USER")).thenReturn(expectedToken);
+    when(jwtService.generateToken(testUserId, testUsername, false)).thenReturn(expectedToken);
 
     // Act
     ResponseEntity<?> response = userEndpoint.login(loginRequest);
@@ -84,7 +83,7 @@ class UserEndpointTest {
     assertEquals(testUserId, body.getUser().getId());
 
     verify(repository).findByUsername(testUsername);
-    verify(jwtService).generateToken(testUserId, testUsername, "USER");
+    verify(jwtService).generateToken(testUserId, testUsername, false);
   }
 
   @Test
@@ -105,7 +104,7 @@ class UserEndpointTest {
     assertNull(response.getBody());
 
     verify(repository).findByUsername("nonexistentuser");
-    verify(jwtService, never()).generateToken(any(), any(), any());
+    verify(jwtService, never()).generateToken(any(), any(), anyBoolean());
   }
 
   @Test
@@ -126,7 +125,7 @@ class UserEndpointTest {
     assertNull(response.getBody());
 
     verify(repository).findByUsername(testUsername);
-    verify(jwtService, never()).generateToken(any(), any(), any());
+    verify(jwtService, never()).generateToken(any(), any(), anyBoolean());
   }
 
   @Test
@@ -166,9 +165,9 @@ class UserEndpointTest {
   }
 
   @Test
-  void testLogin_UserWithNullRole() {
+  void testLogin_UserAsNonAdmin() {
     // Arrange
-    testUser.setRole(null);
+    testUser.setAdmin(false);
     LoginRequestDto loginRequest = new LoginRequestDto();
     loginRequest.setUsername(testUsername);
     loginRequest.setPassword(testPassword);
@@ -176,7 +175,7 @@ class UserEndpointTest {
     String expectedToken = "fake-jwt-token-12345";
 
     when(repository.findByUsername(testUsername)).thenReturn(Optional.of(testUser));
-    when(jwtService.generateToken(testUserId, testUsername, null)).thenReturn(expectedToken);
+    when(jwtService.generateToken(testUserId, testUsername, false)).thenReturn(expectedToken);
 
     // Act
     ResponseEntity<?> response = userEndpoint.login(loginRequest);
@@ -188,7 +187,7 @@ class UserEndpointTest {
     LoginResponseDto body = (LoginResponseDto) response.getBody();
     assertEquals(expectedToken, body.getToken());
 
-    verify(jwtService).generateToken(testUserId, testUsername, null);
+    verify(jwtService).generateToken(testUserId, testUsername, false);
   }
 
   @Test
@@ -199,7 +198,7 @@ class UserEndpointTest {
     loginRequest.setPassword(testPassword);
 
     when(repository.findByUsername(testUsername)).thenReturn(Optional.of(testUser));
-    when(jwtService.generateToken(any(), any(), any())).thenReturn("token");
+    when(jwtService.generateToken(any(), any(), anyBoolean())).thenReturn("token");
 
     // Act
     ResponseEntity<?> response = userEndpoint.login(loginRequest);

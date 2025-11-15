@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SessionService } from './session.service';
 import { LoginResponse, User } from './user.service';
+import { TestUser } from '../../test-resources/test-user.model';
 
 describe('SessionService', () => {
   let service: SessionService;
@@ -47,14 +48,11 @@ describe('SessionService', () => {
     });
 
     it('should reconstitute user from localStorage', () => {
-      const testUser: User = {
+      const testUser = TestUser.createUser({
         id: '123',
         username: 'testuser',
-        email: 'test@example.com',
-        firstName: 'Test',
-        lastName: 'User',
-        role: 'USER'
-      };
+        email: 'test@example.com'
+      });
       
       localStorageMock['jwt_token_body'] = JSON.stringify(testUser);
       
@@ -69,14 +67,7 @@ describe('SessionService', () => {
 
     it('should reconstitute both token and user from localStorage', () => {
       const testToken = 'test-jwt-token-456';
-      const testUser: User = {
-        id: '456',
-        username: 'anotheruser',
-        email: 'another@example.com',
-        firstName: 'Another',
-        lastName: 'User',
-        role: 'ADMIN'
-      };
+      const testUser = TestUser.createUser({ username: 'anotheruser', isAdmin: true });
       
       localStorageMock['jwt_token_key'] = testToken;
       localStorageMock['jwt_token_body'] = JSON.stringify(testUser);
@@ -86,7 +77,7 @@ describe('SessionService', () => {
       
       expect(newService.token()).toBe(testToken);
       expect(newService.user()?.username).toBe('anotheruser');
-      expect(newService.user()?.role).toBe('ADMIN');
+      expect(newService.user()?.isAdmin).toBe(true);
     });
 
     it('should handle invalid JSON in localStorage gracefully', () => {
@@ -106,14 +97,13 @@ describe('SessionService', () => {
     it('should store token and user in localStorage', () => {
       const loginResponse: LoginResponse = {
         token: 'new-token-789',
-        user: {
+        user: TestUser.createUser({
           id: '789',
           username: 'newuser',
           email: 'new@example.com',
           firstName: 'New',
-          lastName: 'User',
-          role: 'USER'
-        }
+          lastName: 'User'
+        })
       };
 
       service.setSession(loginResponse);
@@ -125,14 +115,13 @@ describe('SessionService', () => {
     it('should update token and user signals', () => {
       const loginResponse: LoginResponse = {
         token: 'signal-token-123',
-        user: {
+        user: TestUser.createUser({
           id: '111',
           username: 'signaluser',
           email: 'signal@example.com',
           firstName: 'Signal',
-          lastName: 'User',
-          role: 'USER'
-        }
+          lastName: 'User'
+        })
       };
 
       service.setSession(loginResponse);
@@ -162,14 +151,13 @@ describe('SessionService', () => {
       // Set up initial session
       const loginResponse: LoginResponse = {
         token: 'clear-test-token',
-        user: {
+        user: TestUser.createUser({
           id: '999',
           username: 'clearuser',
           email: 'clear@example.com',
           firstName: 'Clear',
-          lastName: 'User',
-          role: 'USER'
-        }
+          lastName: 'User'
+        })
       };
 
       service.setSession(loginResponse);
@@ -183,14 +171,13 @@ describe('SessionService', () => {
       // Set up initial session
       const loginResponse: LoginResponse = {
         token: 'to-be-cleared',
-        user: {
+        user: TestUser.createUser({
           id: '888',
           username: 'cleareduser',
           email: 'cleared@example.com',
           firstName: 'Cleared',
-          lastName: 'User',
-          role: 'USER'
-        }
+          lastName: 'User'
+        })
       };
 
       service.setSession(loginResponse);
@@ -223,14 +210,13 @@ describe('SessionService', () => {
     it('should react to session changes', () => {
       const loginResponse: LoginResponse = {
         token: 'reactive-token',
-        user: {
+        user: TestUser.createUser({
           id: '555',
           username: 'reactiveuser',
           email: 'reactive@example.com',
           firstName: 'Reactive',
-          lastName: 'User',
-          role: 'USER'
-        }
+          lastName: 'User'
+        })
       };
 
       // Initial state

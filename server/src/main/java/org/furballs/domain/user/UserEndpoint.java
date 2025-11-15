@@ -1,7 +1,6 @@
 package org.furballs.domain.user;
 
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,7 @@ import org.furballs.rest.LoginRequestDto;
 import org.furballs.rest.LoginResponseDto;
 import org.furballs.security.JwtService;
 import org.furballs.security.AuthenticationContext;
+import org.furballs.security.AdminOnly;
 
 import java.util.*;
 import java.util.stream.StreamSupport;
@@ -38,6 +38,7 @@ public class UserEndpoint {
   private AuthenticationContext authenticationContext;
 
   @GetMapping("/users")
+  @AdminOnly
   public List<UserDto> getUsers() {
     Iterable<User> users = repository.findAll();
     if (users instanceof List) {
@@ -56,20 +57,8 @@ public class UserEndpoint {
         .orElseThrow();
   }
 
-  @PostMapping("/users")
-  public UserDto createUser(@RequestBody UserDto userDto) {
-    User user = new User();
-    user.setId(UUID.randomUUID());
-    user.setUsername(userDto.getUsername());
-    user.setEmail(userDto.getEmail());
-    user.setFirstName(userDto.getFirstName());
-    user.setLastName(userDto.getLastName());
-    user.setRole(userDto.getRole());
-    User saved = repository.save(user);
-    return UserDto.from(saved);
-  }
-
   @PutMapping("/users/{id}")
+  @AdminOnly
   public UserDto updateUser(@PathVariable String id, @RequestBody UserDto userDto) {
     UUID userId = UUID.fromString(id);
     User user = repository.findById(userId).orElseThrow();
@@ -77,7 +66,7 @@ public class UserEndpoint {
     user.setEmail(userDto.getEmail());
     user.setFirstName(userDto.getFirstName());
     user.setLastName(userDto.getLastName());
-    user.setRole(userDto.getRole());
+    user.setAdmin(userDto.isAdmin());
     User saved = repository.save(user);
     return UserDto.from(saved);
   }
@@ -117,6 +106,7 @@ public class UserEndpoint {
   }
 
   @PostMapping("/users/register")
+  @AdminOnly
   public UserDto registerUser(@RequestBody RegisterUserDto registerDto) {
     User user = new User();
     LocalDateTime now = LocalDateTime.now();
@@ -125,7 +115,7 @@ public class UserEndpoint {
     user.setEmail(registerDto.getEmail());
     user.setFirstName(registerDto.getFirstName());
     user.setLastName(registerDto.getLastName());
-    user.setRole(registerDto.getRole());
+    user.setAdmin(registerDto.isAdmin());
     user.setPasswordUpdateTimestamp(now);
 
     // Hash the password before storing
@@ -150,7 +140,7 @@ public class UserEndpoint {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
               }
               // Generate JWT token
-              String token = jwtService.generateToken(user.getId(), user.getUsername(), user.getRole());
+              String token = jwtService.generateToken(user.getId(), user.getUsername(), user.isAdmin());
 
               // Create response with token and user details
               UserDto userDto = UserDto.from(user);

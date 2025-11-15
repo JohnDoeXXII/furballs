@@ -1,5 +1,6 @@
 package org.furballs.rest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.furballs.domain.user.User;
 
 import java.util.Objects;
@@ -17,7 +18,8 @@ public class UserDto {
 
   private String lastName;
 
-  private String role;
+  @JsonProperty("isAdmin")
+  private boolean isAdmin;
 
   public UserDto() {
   }
@@ -28,7 +30,7 @@ public class UserDto {
     this.email = user.getEmail();
     this.firstName = user.getFirstName();
     this.lastName = user.getLastName();
-    this.role = user.getRole();
+    this.isAdmin = user.isAdmin();
   }
 
   public static UserDto from(User user) {
@@ -75,12 +77,12 @@ public class UserDto {
     this.lastName = lastName;
   }
 
-  public String getRole() {
-    return role;
+  public boolean isAdmin() {
+    return isAdmin;
   }
 
-  public void setRole(String role) {
-    this.role = role;
+  public void setAdmin(boolean admin) {
+    isAdmin = admin;
   }
 
   @Override
@@ -93,23 +95,23 @@ public class UserDto {
         && Objects.equals(email, userDto.email)
         && Objects.equals(firstName, userDto.firstName)
         && Objects.equals(lastName, userDto.lastName)
-        && Objects.equals(role, userDto.role);
+        && isAdmin == userDto.isAdmin;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, email, firstName, lastName, role);
+    return Objects.hash(id, username, email, firstName, lastName, isAdmin);
   }
 
   @Override
   public String toString() {
     return "UserDto{"
         + "id=" + id
-        + ", username='" + username + '\''
-        + ", email='" + email + '\''
-        + ", firstName='" + firstName + '\''
-        + ", lastName='" + lastName + '\''
-        + ", role='" + role + '\''
+        + ", username='" + username + '\"'
+        + ", email='" + email + '\"'
+        + ", firstName='" + firstName + '\"'
+        + ", lastName='" + lastName + '\"'
+        + ", isAdmin=" + isAdmin
         + '}';
   }
 }

@@ -94,6 +94,13 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- AspectJ for @Aspect support -->
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-aop</artifactId>
+          <version>4.0.0-M2</version>
+        </dependency>
+
         <!--     TEST SCOPES       -->
         <!-- <scope> test </scope> -->
         <dependency>
@@ -120,11 +127,11 @@
                 <configuration>
                     <!-- Instantiates debug server on 5005 after spring-boot:run   -->
                     <!-- Usage: Build in separate terminal and connect through IDE -->
-
+                    <!--
                     <jvmArguments>
                         -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
                     </jvmArguments>
-
+                    -->
                 </configuration>
             </plugin>
         </plugins>

@@ -95,7 +95,7 @@ class LoginResponseDtoTest {
     userDto.setEmail("test@example.com");
     userDto.setFirstName("Test");
     userDto.setLastName("User");
-    userDto.setRole("USER");
+    userDto.setAdmin(false);
     return userDto;
   }
 }
