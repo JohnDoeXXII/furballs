@@ -17,6 +17,7 @@ CREATE SCHEMA shelter
       shelter_id text,
       name text,
       dob date,
+      date_of_intake date,
       type text,
       notes text
     )

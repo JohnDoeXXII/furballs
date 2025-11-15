@@ -20,6 +20,8 @@ public class AnimalDto {
 
   private String notes;
 
+  private LocalDate dateOfIntake;
+
 
   public UUID getId() {
     return id;
@@ -69,6 +71,14 @@ public class AnimalDto {
     this.notes = notes;
   }
 
+  public LocalDate getDateOfIntake() {
+    return dateOfIntake;
+  }
+
+  public void setDateOfIntake(LocalDate dateOfIntake) {
+    this.dateOfIntake = dateOfIntake;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) {
@@ -80,12 +90,13 @@ public class AnimalDto {
         && Objects.equals(name, animalDto.name)
         && Objects.equals(dateOfBirth, animalDto.dateOfBirth)
         && Objects.equals(type, animalDto.type)
-        && Objects.equals(notes, animalDto.notes);
+        && Objects.equals(notes, animalDto.notes)
+        && Objects.equals(dateOfIntake, animalDto.dateOfIntake);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, shelterId, name, dateOfBirth, type, notes);
+    return Objects.hash(id, shelterId, name, dateOfBirth, type, notes, dateOfIntake);
   }
 
   @Override
@@ -97,6 +108,7 @@ public class AnimalDto {
         ", dateOfBirth=" + dateOfBirth +
         ", type='" + type + '\'' +
         ", notes=" + notes +
+        ", dateOfIntake=" + dateOfIntake +
         '}';
   }
 
@@ -108,6 +120,7 @@ public class AnimalDto {
     dto.setName(animal.getName());
     dto.setNotes(animal.getNotes());
     dto.setDateOfBirth(animal.getDob());
+    dto.setDateOfIntake(animal.getDateOfIntake());
     return dto;
   }
 }

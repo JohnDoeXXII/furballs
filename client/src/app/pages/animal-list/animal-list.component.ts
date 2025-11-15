@@ -36,6 +36,7 @@ export class AnimalListComponent implements OnInit {
       width: 100,
     },
     { field: 'type', headerName: 'Type', sortable: true, filter: true },
+    { field: 'dateOfIntake', headerName: 'Date of Intake', sortable: true, filter: true },
     { 
       field: 'dateOfBirth', 
       headerName: 'Age (Months)', 

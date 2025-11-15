@@ -24,6 +24,8 @@ public class Animal {
 
   private String notes;
 
+  private LocalDate dateOfIntake;
+
   // exposed for hibernate
   Animal() {
 
@@ -77,6 +79,14 @@ public class Animal {
     this.notes = notes;
   }
 
+  public LocalDate getDateOfIntake() {
+    return dateOfIntake;
+  }
+
+  public void setDateOfIntake(LocalDate dateOfIntake) {
+    this.dateOfIntake = dateOfIntake;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) {
@@ -88,12 +98,13 @@ public class Animal {
         && Objects.equals(name, animal.name)
         && Objects.equals(dob, animal.dob)
         && Objects.equals(type, animal.type)
-        && Objects.equals(notes, animal.notes);
+        && Objects.equals(notes, animal.notes)
+        && Objects.equals(dateOfIntake, animal.dateOfIntake);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, shelterId, name, dob, type, notes);
+    return Objects.hash(id, shelterId, name, dob, type, notes, dateOfIntake);
   }
 
   @Override
@@ -105,6 +116,7 @@ public class Animal {
         ", dob=" + dob +
         ", type='" + type + '\'' +
         ", notes=" + notes +
+        ", dateOfIntake=" + dateOfIntake +
         '}';
   }
 
@@ -116,6 +128,7 @@ public class Animal {
     animal.dob = dto.getDateOfBirth();
     animal.notes = dto.getNotes();
     animal.type = dto.getType();
+    animal.dateOfIntake = dto.getDateOfIntake();
     return animal;
   }
 }
