@@ -100,36 +100,3 @@ button:focus, input:focus, select:focus, textarea:focus {
 
 .error { color: #b91c1c; font-size: 0.9rem; }
 
-/* Layout with sidebar */
-.app-layout {
-	display: flex;
-	min-height: 100vh;
-}
-
-.sidebar {
-	width: 220px;
-	background: linear-gradient(180deg, #f8fbff, #f2f8ff);
-	border-right: 1px solid #e6eefb;
-	padding: 1rem;
-	box-sizing: border-box;
-}
-
-.sidebar.hidden { display: none; }
-
-.sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.sidebar ul { list-style: none; padding: 0; margin: 0; }
-.sidebar li { margin: 0.5rem 0; }
-.sidebar a { color: #0f172a; text-decoration: none; font-weight: 600; }
-
-.main { flex: 1; }
-
-/* Small screens: sidebar becomes a top bar */
-@media (max-width: 719px) {
-	.app-layout { flex-direction: column; }
-	.sidebar { width: 100%; display: flex; align-items: center; }
-	.sidebar.hidden { display: none; }
-	.sidebar ul { display: flex; gap: 1rem; }
-	.sidebar li { margin: 0; }
-	.container { padding: 0.75rem; }
-}
-

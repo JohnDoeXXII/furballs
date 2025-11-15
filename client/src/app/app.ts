@@ -11,4 +11,9 @@ import { Sidebar } from './sidebar/sidebar';
 })
 export class App {
   protected readonly title = signal('furballz');
+  protected sidebarVisible = signal(true);
+
+  onSidebarToggle(visible: boolean) {
+    this.sidebarVisible.set(visible);
+  }
 }

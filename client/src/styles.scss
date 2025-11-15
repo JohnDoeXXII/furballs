@@ -4,3 +4,6 @@
 @import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 /* global styles */
+:root {
+  --sidebar-width: 16rem; /* 256px, equivalent to w-64 */
+}

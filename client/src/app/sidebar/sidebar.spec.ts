@@ -16,6 +16,13 @@ describe('Sidebar', () => {
   let localStorageMock: { [key: string]: string };
 
   beforeEach(async () => {
+    // Mock window.innerWidth to simulate desktop viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 1920
+    });
+
     // Mock localStorage
     localStorageMock = {};
     
@@ -64,14 +71,14 @@ describe('Sidebar', () => {
   });
 
   it('toggleSidebar should flip sidebarVisible and button should toggle it', () => {
-    const initial = component.sidebarVisible;
+    const initial = component.sidebarVisible();
     component.toggleSidebar();
-    expect(component.sidebarVisible).toBe(!initial);
+    expect(component.sidebarVisible()).toBe(!initial);
 
-    const btn = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+    const btn = fixture.nativeElement.querySelector('[data-testid="toggle-button"]') as HTMLElement;
     btn.click();
     fixture.detectChanges();
-    expect(component.sidebarVisible).toBe(initial);
+    expect(component.sidebarVisible()).toBe(initial);
   });
 
   it('should display cat and dog count pills', fakeAsync(() => {
@@ -101,11 +108,11 @@ describe('Sidebar', () => {
     const newComponent = newFixture.componentInstance;
     newFixture.detectChanges();
     
-    expect(newComponent.sidebarVisible).toBe(false);
+    expect(newComponent.sidebarVisible()).toBe(false);
   });
 
   it('should save sidebar state to localStorage when toggling', () => {
-    const initial = component.sidebarVisible;
+    const initial = component.sidebarVisible();
     component.toggleSidebar();
     
     expect(localStorage.setItem).toHaveBeenCalledWith('sidebarVisible', (!initial).toString());
