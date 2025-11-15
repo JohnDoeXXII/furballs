@@ -1,10 +1,18 @@
 package org.furballs.domain.user;
 
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.furballs.rest.UserDto;
 import org.furballs.rest.RegisterUserDto;
+import org.furballs.rest.LoginRequestDto;
+import org.furballs.rest.LoginResponseDto;
+import org.furballs.security.JwtService;
+import org.furballs.security.AuthenticationContext;
 
 import java.util.*;
 import java.util.stream.StreamSupport;
@@ -22,6 +30,12 @@ public class UserEndpoint {
 
   @Autowired
   private UserRepository repository;
+
+  @Autowired
+  private JwtService jwtService;
+
+  @Autowired
+  private AuthenticationContext authenticationContext;
 
   @GetMapping("/users")
   public List<UserDto> getUsers() {
@@ -69,8 +83,37 @@ public class UserEndpoint {
   }
 
   @DeleteMapping("/users/{id}")
-  public void deleteUser(@PathVariable String id) {
-    repository.deleteById(UUID.fromString(id));
+  public ResponseEntity<?> deleteUser(@PathVariable String id) {
+    // Get authenticated user from context
+    User authenticatedUser = authenticationContext.getCurrentUser();
+    
+    if (authenticatedUser == null) {
+      logger.warning("Delete user attempt failed: No authenticated user");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body("Authentication required");
+    }
+
+    UUID requestedUserId = UUID.fromString(id);
+    
+    // Verify that the authenticated user is deleting their own account
+    if (!authenticatedUser.getId().equals(requestedUserId)) {
+      logger.warning("Delete user attempt failed: User " + authenticatedUser.getId() + 
+          " attempted to delete user " + requestedUserId);
+      return ResponseEntity.status(HttpStatus.FORBIDDEN)
+          .body("You can only delete your own account");
+    }
+    
+    // Verify user exists before deleting
+    if (!repository.existsById(requestedUserId)) {
+      logger.warning("Delete user attempt failed: User " + requestedUserId + " not found");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body("User not found");
+    }
+    
+    // Perform deletion
+    repository.deleteById(requestedUserId);
+    logger.info("User deleted successfully: " + requestedUserId);
+    return ResponseEntity.noContent().build();
   }
 
   @PostMapping("/users/register")
@@ -96,9 +139,36 @@ public class UserEndpoint {
     return UserDto.from(saved);
   }
 
+  @PostMapping("/users/login")
+  public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
+    return repository.findByUsername(loginRequest.getUsername())
+            .map(user -> {
+              String hashedPassword = hashPassword(loginRequest.getPassword(), user.getPasswordUpdateTimestamp());
+
+              if (!hashedPassword.equals(user.getPasswordHash())) {
+                logger.warning("Login attempt failed: Invalid password for user - " + loginRequest.getUsername());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+              }
+              // Generate JWT token
+              String token = jwtService.generateToken(user.getId(), user.getUsername(), user.getRole());
+
+              // Create response with token and user details
+              UserDto userDto = UserDto.from(user);
+              LoginResponseDto response = new LoginResponseDto(token, userDto);
+
+              logger.info("User logged in successfully: " + user.getUsername());
+              return ResponseEntity.ok(response);
+            })
+        .orElseGet(() -> {
+          logger.warning("Login attempt failed: User not found - " + loginRequest.getUsername());
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        });
+
+  }
+
   private String hashPassword(String password, LocalDateTime timestamp) {
     try {
-      String combined = password + timestamp.toString();
+      String combined = password + timestamp.truncatedTo(ChronoUnit.MILLIS).toString();
       MessageDigest digest = MessageDigest.getInstance("SHA-256");
       byte[] hash = digest.digest(combined.getBytes(StandardCharsets.UTF_8));
       StringBuilder hexString = new StringBuilder();

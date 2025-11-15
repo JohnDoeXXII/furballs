@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { UserService } from './user.service';
+import { UserService, LoginResponse } from './user.service';
 import { User, UserRegistration } from '../models/user.model';
+import { SessionService } from './session.service';
 
 describe('UserService', () => {
   const MOCK_USER: User = { 
@@ -15,11 +16,14 @@ describe('UserService', () => {
   };    
   let service: UserService;
   let httpMock: HttpTestingController;
+  let sessionServiceSpy: jasmine.SpyObj<SessionService>;
 
   beforeEach(() => {
+    sessionServiceSpy = jasmine.createSpyObj('SessionService', ['setSession']); 
     TestBed.configureTestingModule({
       providers: [
         UserService,
+        { provide: SessionService, useValue: sessionServiceSpy as SessionService },
         provideHttpClient(),
         provideHttpClientTesting()
       ]
@@ -90,13 +94,22 @@ describe('UserService', () => {
     req.flush(updatedUser);
   });
 
-  it('should delete a user', () => {
-    service.delete('1').subscribe(() => {
-      expect(true).toBe(true);
+  it('should login a user and store JWT token', () => {
+    const loginResponse: LoginResponse = {
+      token: 'fake-jwt-token-12345',
+      user: MOCK_USER
+    };
+
+    spyOn(localStorage, 'setItem');
+
+    service.login('user2', 'password123').subscribe(response => {
+      expect(response).toEqual(loginResponse);
+      expect(sessionServiceSpy.setSession).toHaveBeenCalledWith(loginResponse);
     });
 
-    const req = httpMock.expectOne('/users/1');
-    expect(req.request.method).toBe('DELETE');
-    req.flush(null);
+    const req = httpMock.expectOne('/users/login');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ username: 'user2', password: 'password123' });
+    req.flush(loginResponse);
   });
 });

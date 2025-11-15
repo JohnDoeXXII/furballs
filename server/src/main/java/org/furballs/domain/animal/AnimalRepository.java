@@ -9,4 +9,5 @@ import java.util.UUID;
 @Service
 interface AnimalRepository extends CrudRepository<Animal, UUID> {
   List<Animal> findByShelterIdContaining(String id);
+  long countByType(String type);
 }

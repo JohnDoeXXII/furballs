@@ -1,15 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { User, UserRegistration } from '../models/user.model';
+import { SessionService } from './session.service';
 
 export type { User };
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  user: User;
+}
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private baseUrl = '/users';
+  private readonly JWT_TOKEN_KEY = 'jwt_token';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private sessionService: SessionService
+) {}
 
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.baseUrl);
@@ -27,7 +43,15 @@ export class UserService {
     return this.http.put<User>(`${this.baseUrl}/${id}`, user);
   }
 
-  delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  login(username: string, password: string): Observable<LoginResponse> {
+    const loginRequest: LoginRequest = { username, password };
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, loginRequest)
+      .pipe(
+        tap(response => {
+          if (response.token) {
+            this.sessionService.setSession(response);
+          }
+        })
+      );
   }
 }

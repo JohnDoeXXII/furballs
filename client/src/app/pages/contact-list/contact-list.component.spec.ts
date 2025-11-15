@@ -4,6 +4,7 @@ import { ContactListComponent } from './contact-list.component';
 import { ContactService } from '../../services/contact.service';
 import { of } from 'rxjs';
 import { Contact } from '../../models/contact.model';
+import { configureTestingModule } from '../../../test-resources/test-helpers';
 
 describe('ContactListComponent', () => {
   let fixture: any;
@@ -14,7 +15,7 @@ describe('ContactListComponent', () => {
     spyContactService = jasmine.createSpyObj('ContactService', ['getContacts']);
     spyContactService.getContacts.and.returnValue(of([{} as Contact]));
 
-    await TestBed.configureTestingModule({
+    await configureTestingModule({
       imports: [ContactListComponent],
       providers: [
         provideZonelessChangeDetection(),

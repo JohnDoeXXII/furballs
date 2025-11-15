@@ -43,4 +43,10 @@ export class AnimalService {
   updateAnimal(a: Animal): Observable<Animal> {
     return this.http.put<Animal>(`${this.baseUrl}/${a.id}`, a);
   }
+
+  getAnimalCountByType(type: string): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/count`, {
+      params: { type }
+    });
+  }
 }

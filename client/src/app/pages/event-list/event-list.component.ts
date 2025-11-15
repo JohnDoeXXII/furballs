@@ -17,7 +17,7 @@ import { Link } from '../../components/link/link.component';
 })
 export class EventListComponent implements OnInit {
 
-  constructor(private eventService: EventService, private cd: ChangeDetectorRef, private router: Router) {}
+  constructor(private eventService: EventService, private cd: ChangeDetectorRef) {}
 
   // AG Grid column definitions and row data
   columnDefs: ColDef[] = [
@@ -64,9 +64,5 @@ export class EventListComponent implements OnInit {
       this.rowData = list || [];
       this.cd.detectChanges();
     });
-  }
-
-  createNew() {
-    this.router.navigate(['/events/new']);
   }
 }

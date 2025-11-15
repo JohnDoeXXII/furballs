@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
-import { UserListComponent } from './user-list.component';
+import { UserListComponent, LINK_RENDERER } from './user-list.component';
 import { UserService } from '../../services/user.service';
 import { of } from 'rxjs';
+import { configureTestingModule, LinkRendererStubComponent } from '../../../test-resources/test-helpers';
 
 describe('UserListComponent', () => {
   let fixture: any;
@@ -13,11 +14,12 @@ describe('UserListComponent', () => {
     userServiceSpy = jasmine.createSpyObj('UserService', ['getAll']);
     userServiceSpy.getAll.and.returnValue(of([]));
 
-    await TestBed.configureTestingModule({
+    await configureTestingModule({
       imports: [UserListComponent],
       providers: [
         provideZonelessChangeDetection(),
-        { provide: UserService, useValue: userServiceSpy }
+        { provide: UserService, useValue: userServiceSpy },
+        { provide: LINK_RENDERER, useValue: LinkRendererStubComponent }
       ]
     }).compileComponents();
 

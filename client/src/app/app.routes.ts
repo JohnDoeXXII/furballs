@@ -24,6 +24,12 @@ export const USER_LIST_ROUTE: Route =
 		loadComponent: () => import('./pages/user-list/user-list.component').then(m => m.UserListComponent)
 	};
 
+export const USER_LOGIN_ROUTE: Route =
+	{
+		path: 'login',
+		loadComponent: () => import('./pages/user-login/user-login.component').then(m => m.UserLoginComponent)
+	};
+
 export const routes: Routes = [
 	{ path: '', redirectTo: ANIMAL_LIST_ROUTE.path, pathMatch: 'full' },
 	{
@@ -70,6 +76,7 @@ export const routes: Routes = [
 		path: 'userz/:userId',
 		loadComponent: () => import('./pages/user-details/user-details.component').then(m => m.UserDetailsComponent)
 	},
+	USER_LOGIN_ROUTE,
 	{
 		path: '**',
 		loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)

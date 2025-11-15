@@ -26,8 +26,8 @@ public class User {
 
   private LocalDateTime passwordUpdateTimestamp;
 
-  // exposed for hibernate
-  User() {
+  // exposed for hibernate and testing
+  public User() {
 
   }
 

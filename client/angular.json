@@ -89,6 +89,9 @@
             "polyfills": [
              "zone.js",
              "zone.js/testing"
+            ],
+            "codeCoverageExclude": [
+              "src/test-resources/**/*"
             ]
           }
         }

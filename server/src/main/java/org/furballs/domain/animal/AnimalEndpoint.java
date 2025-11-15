@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.furballs.rest.AnimalDto;
@@ -74,5 +75,10 @@ public class AnimalEndpoint {
     return repository.findById(UUID.fromString(id))
         .map(AnimalDto::from)
         .orElseThrow();
+  }
+
+  @GetMapping(path = "/animals/count")
+  public @ResponseBody long getAnimalCountByType(@RequestParam("type") String type) {
+    return repository.countByType(type);
   }
 }

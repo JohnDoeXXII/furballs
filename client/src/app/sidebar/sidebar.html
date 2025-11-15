@@ -10,6 +10,12 @@
 @if (sidebarVisible) {
    <div class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
       <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+         <!-- Debug: User Signal State -->
+         <div class="mb-4 p-2 bg-yellow-100 dark:bg-yellow-900 rounded text-xs">
+            <strong>Debug - User Signal:</strong><br>
+            Value: {{ sessionService.user() | json }}<br>
+            Has User: {{ !!sessionService.user() }}
+         </div>
          <ul  class="space-y-2 font-medium">
             <li>
                <a (click)="toggleSidebar()" data-testid="toggle-button" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -22,19 +28,18 @@
          </ul>
          <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
             <li>
-               <a (click)="navigateTo('/animalz')" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <a routerLink="/animalz" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                   <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
                      <path d="M 9,1.8 L 16.7,7.6 L 1.3,7.6 Z M 2.7,7.1 V 15.3 H 15.3 V 7.1 H 2.7 M 6.3 15.3 V 12.1 A 2.7 2.7 0 0 1 11.7 12.1 V 15.3 M 3.2,7.6 V 14.8 H 14.8 V 7.6 Z"
                         stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill="#FFFFFF00"/>
                   </svg>
                   <span class="flex-1 ms-3 whitespace-nowrap">Animals</span>
-                  <!-- TO DO: Fill these pills with real data -->
-                  <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">21</span>
-                  <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-violet-800 bg-violet-100 rounded-full dark:bg-violet-900 dark:text-violet-300">8</span>
+                  <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{{ catCount() }}</span>
+                  <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-violet-800 bg-violet-100 rounded-full dark:bg-violet-900 dark:text-violet-300">{{ dogCount() }}</span>
                </a>
             </li>
             <li>
-               <a (click)="navigateTo('/contactz')" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <a routerLink="/contactz" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                   <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                      <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
                   </svg>
@@ -42,7 +47,7 @@
                </a>
             </li>
             <li>
-               <a (click)="navigateTo('/eventz')" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <a routerLink="/eventz" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                   <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                      <path d="M6 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM4 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zm12-2a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM18 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8.5 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm6 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm3 2a1 1 0 1 0-2 0 1 1 0 0 0 2 0z"/>
                   </svg>
@@ -52,7 +57,7 @@
          </ul>
          <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
             <li>
-               <a (click)="navigateTo('/configuration')" class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+               <a routerLink="/configuration" class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group cursor-pointer">
                   <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
                      <path d="M16 14V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 0 0 0-2h-1v-2a2 2 0 0 0 2-2ZM4 2h2v12H4V2Zm8 16H3a1 1 0 0 1 0-2h9v2Z"/>
                   </svg>
@@ -60,7 +65,7 @@
                </a>
             </li>
             <li>
-               <a (click)="navigateTo('/admin')" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <a routerLink="/admin" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                   <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                      <path d="M 17 5.923 A 1 1 0 0 0 16 5 h -3 V 4 a 4 4 0 1 0 -8 0 v 1 H 2 a 1 1 0 0 0 -1 0.923 L 0.086 17.846 A 2 2 0 0 0 2.08 20 h 13.84 a 2 2 0 0 0 1.994 -2.153 Z M 6 16 L 12 16 L 6 11 L 13 11 L 13 16"/>
                   </svg>
@@ -68,13 +73,32 @@
                </a>
             </li>
             <li>
-               <a (click)="navigateTo('/userz')" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <a routerLink="/userz" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                   <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                      <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
                   </svg>
                   <span class="flex-1 ms-3 whitespace-nowrap">Users</span>
                </a>
             </li>
+            @if (sessionService.user()) {
+            <li>
+               <a (click)="logout()" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                  <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                     <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                  </svg>
+                  <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
+               </a>
+            </li>
+            } @else {
+            <li>
+               <a routerLink="/login" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
+                  <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                     <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                  </svg>
+                  <span class="flex-1 ms-3 whitespace-nowrap">Login</span>
+               </a>
+            </li>
+            }
          </ul>
       </div>
    </div>

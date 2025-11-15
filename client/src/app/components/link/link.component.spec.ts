@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideRouter } from '@angular/router';
 import { Link } from './link.component';
 
 describe('Link', () => {
@@ -8,7 +8,10 @@ describe('Link', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Link]
+      imports: [Link],
+      providers: [
+        provideRouter([])
+      ]
     })
     .compileComponents();
 
@@ -26,7 +29,7 @@ describe('Link', () => {
     const a = el.querySelector('a') as HTMLAnchorElement;
     expect(a).toBeTruthy();
     expect(a.textContent?.trim()).toBe('View');
-    expect(a.getAttribute('href')).toBe('');
+    expect(a.getAttribute('href')).toBe('/');
   });
 
   it('binds inputs to anchor attributes', () => {

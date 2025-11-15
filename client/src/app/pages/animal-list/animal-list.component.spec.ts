@@ -3,6 +3,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { AnimalListComponent } from './animal-list.component';
 import { Animal, AnimalService } from '../../services/animal.service';
 import { of } from 'rxjs';
+import { configureTestingModule } from '../../../test-resources/test-helpers';
 
 describe('AnimalListComponent', () => {
   let fixture: any;
@@ -12,8 +13,8 @@ describe('AnimalListComponent', () => {
   beforeEach(async () => {
     spyAnimalService = jasmine.createSpyObj('AnimalService', ['getAnimals']);
     spyAnimalService.getAnimals.and.returnValue(of([{ } as Animal]));
-    await TestBed.configureTestingModule({
-    imports: [AnimalListComponent],
+    await configureTestingModule({
+      imports: [AnimalListComponent],
       providers: [
         provideZonelessChangeDetection(),
         { provide: AnimalService, useValue: spyAnimalService }

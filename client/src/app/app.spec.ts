@@ -1,13 +1,29 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
+import { Component } from '@angular/core';
+import { Sidebar } from './sidebar/sidebar';
+
+@Component({
+  selector: 'sidebar',
+  standalone: true,
+  template: '<div>Sidebar Stub</div>'
+})
+class SidebarStubComponent {}
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideZonelessChangeDetection()]
-    }).compileComponents();
+      providers: [
+        provideZonelessChangeDetection()
+      ]
+    })
+    .overrideComponent(App, {
+      remove: { imports: [Sidebar] },
+      add: { imports: [SidebarStubComponent] }
+    })
+    .compileComponents();
   });
 
   it('should create the app', () => {

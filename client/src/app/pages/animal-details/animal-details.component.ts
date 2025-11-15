@@ -67,6 +67,7 @@ export class AnimalDetailsComponent implements OnInit {
           this.animalIntake.patchValue(animal);
         });
     } else {
+      
       this.animalService.getMaxShelterId()
         .subscribe((maxId: string) => {
           this.animalIntake.controls['shelterId'].setValue(maxId);

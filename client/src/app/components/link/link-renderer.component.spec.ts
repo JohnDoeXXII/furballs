@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LinkRendererComponent } from './link-renderer.component';
+import { configureTestingModule } from '../../../test-resources/test-helpers';
 
 describe('LinkRendererComponent', () => {
   let component: LinkRendererComponent;
   let fixture: ComponentFixture<LinkRendererComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    await configureTestingModule({
       imports: [LinkRendererComponent]
     }).compileComponents();
 

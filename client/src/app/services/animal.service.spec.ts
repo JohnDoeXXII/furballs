@@ -70,4 +70,31 @@ describe('AnimalService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mock);
   });
+
+  it('getAnimalCountByType() should GET /animals/count with type query param', () => {
+    const type = 'Cat';
+    const mockCount = 5;
+    
+    service.getAnimalCountByType(type).subscribe(res => expect(res).toEqual(mockCount));
+
+    const req = httpMock.expectOne(request => 
+      request.url === '/animals/count' && request.params.get('type') === type
+    );
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('type')).toBe(type);
+    req.flush(mockCount);
+  });
+
+  it('getAnimalCountByType() should handle Dog type', () => {
+    const type = 'Dog';
+    const mockCount = 3;
+    
+    service.getAnimalCountByType(type).subscribe(res => expect(res).toEqual(mockCount));
+
+    const req = httpMock.expectOne(request => 
+      request.url === '/animals/count' && request.params.get('type') === type
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush(mockCount);
+  });
 });

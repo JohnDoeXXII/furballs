@@ -3,6 +3,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { EventListComponent } from './event-list.component';
 import { Event, EventService } from '../../services/event.service';
 import { of } from 'rxjs';
+import { configureTestingModule } from '../../../test-resources/test-helpers';
 
 describe('EventListComponent', () => {
   let fixture: any;
@@ -12,7 +13,7 @@ describe('EventListComponent', () => {
   beforeEach(async () => {
     spyEventService = jasmine.createSpyObj('EventService', ['getAll']);
     spyEventService.getAll.and.returnValue(of([{ } as Event]));
-    await TestBed.configureTestingModule({
+    await configureTestingModule({
       imports: [EventListComponent],
       providers: [
         provideZonelessChangeDetection(),

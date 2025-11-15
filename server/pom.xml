@@ -69,6 +69,31 @@
             <version>2.20.0</version>
         </dependency>
 
+        <!-- JWT Dependencies -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.12.6</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.12.6</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!--     TEST SCOPES       -->
         <!-- <scope> test </scope> -->
         <dependency>
@@ -95,11 +120,11 @@
                 <configuration>
                     <!-- Instantiates debug server on 5005 after spring-boot:run   -->
                     <!-- Usage: Build in separate terminal and connect through IDE -->
-                    <!--
+
                     <jvmArguments>
                         -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
                     </jvmArguments>
-                    -->
+
                 </configuration>
             </plugin>
         </plugins>
